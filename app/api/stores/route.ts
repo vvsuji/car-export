@@ -1,32 +1,35 @@
-import prismadb from '@/lib/prismadb';
-import { auth } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs';
 
-export async function POST(req: Request) {
-	try {
-		const { userId } = auth();
-		const body = await req.json();
+import prismadb from '@/lib/prismadb';
 
-		const { name } = body;
+export async function POST(
+  req: Request,
+) {
+  try {
+    const { userId } = auth();
+    const body = await req.json();
 
-		if (!userId) {
-			return new NextResponse('Unauthorized', { status: 401 });
-		}
+    const { name } = body;
 
-		if (!name) {
-			return new NextResponse('Name is required', { status: 400 });
-		}
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
 
-		const store = await prismadb.store.create({
-			data: {
-				name,
-				userId,
-			},
-		});
+    if (!name) {
+      return new NextResponse("Name is required", { status: 400 });
+    }
 
-		return NextResponse.json(store);
-	} catch (error) {
-		console.log('[STORES_POST]', error);
-		return new NextResponse('Internal error', { status: 500 });
-	}
-}
+    const store = await prismadb.store.create({
+      data: {
+        name,
+        userId,
+      }
+    });
+  
+    return NextResponse.json(store);
+  } catch (error) {
+    console.log('[STORES_POST]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};
