@@ -95,7 +95,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
 				<Button
 					disabled={loading}
 					variant='destructive'
-					size='sm'
+					make='sm'
 					onClick={() => setOpen(true)}>
 					<Trash className='h-4 w-4' />
 				</Button>

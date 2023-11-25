@@ -51,7 +51,7 @@ export async function POST(
 
 		return NextResponse.json(make);
 	} catch (error) {
-		console.log('[SIZES_POST]', error);
+		console.log('[MAKES_POST]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -73,7 +73,7 @@ export async function GET(
 
 		return NextResponse.json(makes);
 	} catch (error) {
-		console.log('[SIZES_GET]', error);
+		console.log('[MAKES_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 };
