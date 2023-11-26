@@ -34,9 +34,64 @@ export function MainNav({
 			active: pathname === `/${params.storeId}/makes`,
 		},
 		{
+			href: `/${params.storeId}/models`,
+			label: 'Models',
+			active: pathname === `/${params.storeId}/models`,
+		},
+		{
+			href: `/${params.storeId}/years`,
+			label: 'Year',
+			active: pathname === `/${params.storeId}/years`,
+		},
+		{
+			href: `/${params.storeId}/fueltypes`,
+			label: 'Fuel',
+			active: pathname === `/${params.storeId}/fueltypes`,
+		},
+		{
+			href: `/${params.storeId}/transmissions`,
+			label: 'Transmission',
+			active: pathname === `/${params.storeId}/transmissions`,
+		},
+		{
+			href: `/${params.storeId}/drivetypes`,
+			label: 'Drive',
+			active: pathname === `/${params.storeId}/drivetypes`,
+		},
+		{
+			href: `/${params.storeId}/conditions`,
+			label: 'Condition',
+			active: pathname === `/${params.storeId}/conditions`,
+		},
+		{
+			href: `/${params.storeId}/passengers`,
+			label: 'Passengers',
+			active: pathname === `/${params.storeId}/passengers`,
+		},
+		{
+			href: `/${params.storeId}/enginevolumes`,
+			label: 'EV',
+			active: pathname === `/${params.storeId}/enginevolumes`,
+		},
+		{
+			href: `/${params.storeId}/options`,
+			label: 'Option',
+			active: pathname === `/${params.storeId}/options`,
+		},
+		{
 			href: `/${params.storeId}/colors`,
 			label: 'Colors',
 			active: pathname === `/${params.storeId}/colors`,
+		},
+		{
+			href: `/${params.storeId}/steerings`,
+			label: 'Steering',
+			active: pathname === `/${params.storeId}/steerings`,
+		},
+		{
+			href: `/${params.storeId}/locations`,
+			label: 'Location',
+			active: pathname === `/${params.storeId}/locations`,
 		},
 		{
 			href: `/${params.storeId}/products`,
