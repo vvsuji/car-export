@@ -26,7 +26,7 @@ import { AlertModal } from "@/components/modals/alert-modal"
 
 const formSchema = z.object({
   name: z.string().min(1),
-  value: z.string().min(1),
+  // value: z.string().min(1),
 });
 
 type MakeFormValues = z.infer<typeof formSchema>;
@@ -133,7 +133,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 								</FormItem>
 							)}
 						/>
-						<FormField
+						{/* <FormField
 							control={form.control}
 							name='value'
 							render={({ field }) => (
@@ -149,7 +149,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormMessage />
 								</FormItem>
 							)}
-						/>
+						/> */}
 					</div>
 					<Button disabled={loading} className='ml-auto' type='submit'>
 						{action}
