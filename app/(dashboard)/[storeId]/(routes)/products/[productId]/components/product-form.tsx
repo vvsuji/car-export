@@ -140,7 +140,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 					<Button
 						disabled={loading}
 						variant='destructive'
-						make='sm'
+						size='sm'
 						onClick={() => setOpen(true)}>
 						<Trash className='h-4 w-4' />
 					</Button>

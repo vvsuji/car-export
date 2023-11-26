@@ -52,7 +52,7 @@ export default function StoreSwitcher({ className, items = [] }: StoreSwitcherPr
 			<PopoverTrigger asChild>
 				<Button
 					variant='outline'
-					make='sm'
+					size='sm'
 					role='combobox'
 					aria-expanded={open}
 					aria-label='Select a store'
