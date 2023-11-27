@@ -1,15 +1,15 @@
-"use client"
+'use client';
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef } from '@tanstack/react-table';
 
-import { CellAction } from "./cell-action"
+import { CellAction } from './cell-action';
 
 export type ProductColumn = {
 	id: string;
 	name: string;
 	price: string;
 	category: string;
-	make: string;
+	size: string;
 	color: string;
 	createdAt: string;
 	isFeatured: boolean;
