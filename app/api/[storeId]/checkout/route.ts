@@ -36,15 +36,15 @@ export async function POST(
 
   products.forEach((product) => {
     line_items.push({
-      quantity: 1,
-      price_data: {
-        currency: 'USD',
-        product_data: {
-          name: product.name,
-        },
-        unit_amount: product.price.toNumber() * 100
-      }
-    });
+			quantity: 1,
+			price_data: {
+				currency: 'KRW',
+				product_data: {
+					name: product.name,
+				},
+				unit_amount: product.price.toNumber() * 100,
+			},
+		});
   });
 
   const order = await prismadb.order.create({
