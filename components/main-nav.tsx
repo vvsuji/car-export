@@ -1,18 +1,28 @@
 "use client";
 
-import Link from "next/link"
-import { useParams, usePathname } from "next/navigation";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useParams, usePathname } from 'next/navigation';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
 export function MainNav({
-  className,
-  ...props
+	className,
+	...props
 }: React.HTMLAttributes<HTMLElement>) {
-  const pathname = usePathname();
-  const params = useParams();
+	const pathname = usePathname();
+	const params = useParams();
+	const [isMounted, setIsMounted] = useState(false);
 
-  const routes = [
+	const allRoutes = [
 		{
 			href: `/${params.storeId}`,
 			label: 'Overview',
@@ -110,23 +120,67 @@ export function MainNav({
 		},
 	];
 
-  return (
-    <nav
-      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
-      {...props}
-    >
-      {routes.map((route) => (
-        <Link
-          key={route.href}
-          href={route.href}
-          className={cn(
-            'text-sm font-medium transition-colors hover:text-primary',
-            route.active ? 'text-black dark:text-white' : 'text-muted-foreground'
-          )}
-        >
-          {route.label}
-      </Link>
-      ))}
-    </nav>
-  )
-};
+	const dropdownRoutes = allRoutes.filter((route) => {
+		return (
+			route.href.includes(`/${params.storeId}/years`) ||
+			route.href.includes(`/${params.storeId}/fueltypes`) ||
+			route.href.includes(`/${params.storeId}/transmissions`) ||
+			route.href.includes(`/${params.storeId}/drivetypes`) ||
+			route.href.includes(`/${params.storeId}/conditions`) ||
+			route.href.includes(`/${params.storeId}/passengers`) ||
+			route.href.includes(`/${params.storeId}/enginevolumes`) ||
+			route.href.includes(`/${params.storeId}/colors`) ||
+			route.href.includes(`/${params.storeId}/steerings`) ||
+			route.href.includes(`/${params.storeId}/locations`)
+		);
+	});
+
+	const nonDropdownRoutes = allRoutes.filter((route) => {
+		return !dropdownRoutes.find(
+			(dropdownRoute) => dropdownRoute.href === route.href,
+		);
+	});
+
+	useEffect(() => {
+		setIsMounted(true); // Set isMounted to true when component is mounted on client side
+	}, []);
+
+	return (
+		<nav
+			className={cn('flex items-center space-x-4 lg:space-x-6', className)}
+			{...props}>
+			{isMounted &&
+				nonDropdownRoutes.map((route) => (
+					<Link
+						key={route.href}
+						href={route.href}
+						passHref
+						className={cn(
+							'text-sm font-medium transition-colors hover:text-primary',
+							route.active
+								? 'text-black dark:text-white'
+								: 'text-muted-foreground',
+						)}>
+						{/* Use a wrapper element instead of an <a> tag */}
+						<div>{route.label}</div>
+					</Link>
+				))}
+			{isMounted && dropdownRoutes.length > 0 && (
+				<div className='relative'>
+					<DropdownMenu>
+						<DropdownMenuTrigger>
+							<button>More</button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent>
+							{dropdownRoutes.map((route) => (
+								<DropdownMenuItem key={route.href}>
+									<Link href={route.href}>{route.label}</Link>
+								</DropdownMenuItem>
+							))}
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</div>
+			)}
+		</nav>
+	);
+}

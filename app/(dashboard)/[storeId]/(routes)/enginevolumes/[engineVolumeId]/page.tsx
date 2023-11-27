@@ -1,21 +1,25 @@
 import prismadb from "@/lib/prismadb";
 
-import { MakeForm } from './components/make-form';
+import { EngineVolumeForm } from './components/engine-volume-form';
 
-const MakePage = async ({ params }: { params: { makeId: string } }) => {
-	const make = await prismadb.make.findUnique({
+const EngineVolumePage = async ({
+	params,
+}: {
+	params: { engineVolumeId: string };
+}) => {
+	const engineVolume = await prismadb.engineVolume.findUnique({
 		where: {
-			id: params.makeId,
+			id: params.engineVolumeId,
 		},
 	});
 
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<MakeForm initialData={make} />
+				<EngineVolumeForm initialData={engineVolume} />
 			</div>
 		</div>
 	);
 };
 
-export default MakePage;
+export default EngineVolumePage;

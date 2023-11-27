@@ -9,13 +9,15 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { ApiList } from "@/components/ui/api-list";
 
-import { columns, MakeColumn } from './columns';
+import { columns, EngineVolumeColumn } from './columns';
 
-interface MakesClientProps {
-	data: MakeColumn[];
+interface EngineVolumesClientProps {
+	data: EngineVolumeColumn[];
 }
 
-export const MakesClient: React.FC<MakesClientProps> = ({ data }) => {
+export const EngineVolumesClient: React.FC<EngineVolumesClientProps> = ({
+	data,
+}) => {
 	const params = useParams();
 	const router = useRouter();
 
@@ -23,18 +25,19 @@ export const MakesClient: React.FC<MakesClientProps> = ({ data }) => {
 		<>
 			<div className='flex items-center justify-between'>
 				<Heading
-					title={`Makes (${data.length})`}
-					description='Manage makes for your products'
+					title={`Engine Volumes (${data.length})`}
+					description='Manage engine volumes for your products'
 				/>
-				<Button onClick={() => router.push(`/${params.storeId}/makes/new`)}>
+				<Button
+					onClick={() => router.push(`/${params.storeId}/enginevolumes/new`)}>
 					<Plus className='mr-2 h-4 w-4' /> Add New
 				</Button>
 			</div>
 			<Separator />
 			<DataTable searchKey='name' columns={columns} data={data} />
-			<Heading title='API' description='API Calls for Makes' />
+			<Heading title='API' description='API Calls for Engine Volumes' />
 			<Separator />
-			<ApiList entityName='makes' entityIdName='makeId' />
+			<ApiList entityName='enginevolumes' entityIdName='engineVolumeId' />
 		</>
 	);
 };

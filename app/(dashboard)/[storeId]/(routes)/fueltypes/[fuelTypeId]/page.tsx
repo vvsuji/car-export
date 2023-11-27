@@ -1,21 +1,21 @@
 import prismadb from "@/lib/prismadb";
 
-import { MakeForm } from './components/make-form';
+import { FuelTypeForm } from './components/fuel-type-form';
 
-const MakePage = async ({ params }: { params: { makeId: string } }) => {
-	const make = await prismadb.make.findUnique({
+const FuelTypePage = async ({ params }: { params: { fuelTypeId: string } }) => {
+	const fuelType = await prismadb.fuelType.findUnique({
 		where: {
-			id: params.makeId,
+			id: params.fuelTypeId,
 		},
 	});
 
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<MakeForm initialData={make} />
+				<FuelTypeForm initialData={fuelType} />
 			</div>
 		</div>
 	);
 };
 
-export default MakePage;
+export default FuelTypePage;
