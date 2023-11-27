@@ -1,72 +1,76 @@
-"use client"
+'use client';
 
-import * as z from "zod"
-import axios from "axios"
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
-import { Trash } from "lucide-react"
-import { Make } from '@prisma/client';
-import { useParams, useRouter } from "next/navigation"
+import * as z from 'zod';
+import axios from 'axios';
+import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { Trash } from 'lucide-react';
+import { DriveType } from '@prisma/client';
+import { useParams, useRouter } from 'next/navigation';
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Separator } from "@/components/ui/separator"
-import { Heading } from "@/components/ui/heading"
-import { AlertModal } from "@/components/modals/alert-modal"
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
+import { Separator } from '@/components/ui/separator';
+import { Heading } from '@/components/ui/heading';
+import { AlertModal } from '@/components/modals/alert-modal';
 
 const formSchema = z.object({
-  name: z.string().min(1),
-  // value: z.string().min(1),
+	name: z.string().min(1),
+	// value: z.string().min(1),
 });
 
-type MakeFormValues = z.infer<typeof formSchema>;
+type DriveTypeFormValues = z.infer<typeof formSchema>;
 
-interface MakeFormProps {
-	initialData: Make | null;
-};
+interface DriveTypeFormProps {
+	initialData: DriveType | null;
+}
 
-export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
+export const DriveTypeForm: React.FC<DriveTypeFormProps> = ({
+	initialData,
+}) => {
 	const params = useParams();
 	const router = useRouter();
 
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const title = initialData ? 'Edit make' : 'Create make';
-	const description = initialData ? 'Edit a make.' : 'Add a new make';
-	const toastMessage = initialData ? 'Make updated.' : 'Make created.';
+	const title = initialData ? 'Edit condition' : 'Create condition';
+	const description = initialData ? 'Edit a condition.' : 'Add a new condition';
+	const toastMessage = initialData
+		? 'Condition updated.'
+		: 'Condition created.';
 	const action = initialData ? 'Save changes' : 'Create';
 
-	const form = useForm<MakeFormValues>({
+	const form = useForm<DriveTypeFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: initialData || {
 			name: '',
 		},
 	});
 
-	const onSubmit = async (data: MakeFormValues) => {
+	const onSubmit = async (data: DriveTypeFormValues) => {
 		try {
 			setLoading(true);
 			if (initialData) {
 				await axios.patch(
-					`/api/${params.storeId}/makes/${params.makeId}`,
+					`/api/${params.storeId}/drivetypes/${params.driveTypeId}`,
 					data,
 				);
 			} else {
-				await axios.post(`/api/${params.storeId}/makes`, data);
+				await axios.post(`/api/${params.storeId}/drivetypes`, data);
 			}
 			router.refresh();
-			router.push(`/${params.storeId}/makes`);
+			router.push(`/${params.storeId}/drivetypes`);
 			toast.success(toastMessage);
 		} catch (error: any) {
 			toast.error('Something went wrong.');
@@ -78,12 +82,16 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 	const onDelete = async () => {
 		try {
 			setLoading(true);
-			await axios.delete(`/api/${params.storeId}/makes/${params.makeId}`);
+			await axios.delete(
+				`/api/${params.storeId}/drivetypes/${params.driveTypeId}`,
+			);
 			router.refresh();
-			router.push(`/${params.storeId}/makes`);
-			toast.success('Make deleted.');
+			router.push(`/${params.storeId}/drivetypes`);
+			toast.success('Condition deleted.');
 		} catch (error: any) {
-			toast.error('Make sure you removed all products using this make first.');
+			toast.error(
+				'Condition sure you removed all products using this condition first.',
+			);
 		} finally {
 			setLoading(false);
 			setOpen(false);
@@ -125,7 +133,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Make name'
+											placeholder='Condition name'
 											{...field}
 										/>
 									</FormControl>
@@ -142,7 +150,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Make value'
+											placeholder='Condition value'
 											{...field}
 										/>
 									</FormControl>

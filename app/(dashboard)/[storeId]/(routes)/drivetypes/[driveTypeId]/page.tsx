@@ -1,21 +1,25 @@
-import prismadb from "@/lib/prismadb";
+import prismadb from '@/lib/prismadb';
 
-import { MakeForm } from './components/make-form';
+import { DriveTypeForm } from './components/drive-type-form';
 
-const MakePage = async ({ params }: { params: { makeId: string } }) => {
-	const make = await prismadb.make.findUnique({
+const DriveTypePage = async ({
+	params,
+}: {
+	params: { driveTypeId: string };
+}) => {
+	const driveType = await prismadb.driveType.findUnique({
 		where: {
-			id: params.makeId,
+			id: params.driveTypeId,
 		},
 	});
 
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<MakeForm initialData={make} />
+				<DriveTypeForm initialData={driveType} />
 			</div>
 		</div>
 	);
 };
 
-export default MakePage;
+export default DriveTypePage;

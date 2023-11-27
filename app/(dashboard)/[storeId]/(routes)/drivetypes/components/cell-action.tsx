@@ -1,43 +1,43 @@
-"use client";
+'use client';
 
-import axios from "axios";
-import { useState } from "react";
-import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
-import { toast } from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
+import axios from 'axios';
+import { useState } from 'react';
+import { Copy, Edit, MoreHorizontal, Trash } from 'lucide-react';
+import { toast } from 'react-hot-toast';
+import { useParams, useRouter } from 'next/navigation';
 
-import { Button } from "@/components/ui/button";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { AlertModal } from "@/components/modals/alert-modal";
+import { Button } from '@/components/ui/button';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { AlertModal } from '@/components/modals/alert-modal';
 
-import { MakeColumn } from './columns';
+import { DriveTypeColumn } from './columns';
 
 interface CellActionProps {
-	data: MakeColumn;
+	data: DriveTypeColumn;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({
-  data,
-}) => {
-  const router = useRouter();
-  const params = useParams();
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+	const router = useRouter();
+	const params = useParams();
+	const [open, setOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
 
-  const onConfirm = async () => {
+	const onConfirm = async () => {
 		try {
 			setLoading(true);
-			await axios.delete(`/api/${params.storeId}/makes/${data.id}`);
-			toast.success('Make deleted.');
+			await axios.delete(`/api/${params.storeId}/drivetypes/${data.id}`);
+			toast.success('Drive type deleted.');
 			router.refresh();
 		} catch (error) {
-			toast.error('Make sure you removed all products using this make first.');
+			toast.error(
+				'Drive type sure you removed all products using this drive type first.',
+			);
 		} finally {
 			setOpen(false);
 			setLoading(false);
@@ -46,7 +46,7 @@ export const CellAction: React.FC<CellActionProps> = ({
 
 	const onCopy = (id: string) => {
 		navigator.clipboard.writeText(id);
-		toast.success('Make ID copied to clipboard.');
+		toast.success('Drive type ID copied to clipboard.');
 	};
 
 	return (
@@ -70,7 +70,9 @@ export const CellAction: React.FC<CellActionProps> = ({
 						<Copy className='mr-2 h-4 w-4' /> Copy Id
 					</DropdownMenuItem>
 					<DropdownMenuItem
-						onClick={() => router.push(`/${params.storeId}/makes/${data.id}`)}>
+						onClick={() =>
+							router.push(`/${params.storeId}/drivetypes/${data.id}`)
+						}>
 						<Edit className='mr-2 h-4 w-4' /> Update
 					</DropdownMenuItem>
 					<DropdownMenuItem onClick={() => setOpen(true)}>

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs';
 
 import prismadb from '@/lib/prismadb';
- 
+
 export async function POST(
 	req: Request,
 	{ params }: { params: { storeId: string } },
@@ -22,10 +22,6 @@ export async function POST(
 			return new NextResponse('Name is required', { status: 400 });
 		}
 
-		// if (!value) {
-		// 	return new NextResponse('Value is required', { status: 400 });
-		// }
-
 		if (!params.storeId) {
 			return new NextResponse('Store id is required', { status: 400 });
 		}
@@ -41,16 +37,16 @@ export async function POST(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
-		const make = await prismadb.make.create({
+		const driveType = await prismadb.driveType.create({
 			data: {
 				name,
 				storeId: params.storeId,
 			},
 		});
 
-		return NextResponse.json(make);
+		return NextResponse.json(driveType);
 	} catch (error) {
-		console.log('[MAKES_POST]', error);
+		console.log('[DRIVETYPES_POST]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -64,15 +60,15 @@ export async function GET(
 			return new NextResponse('Store id is required', { status: 400 });
 		}
 
-		const makes = await prismadb.make.findMany({
+		const driveTypes = await prismadb.driveType.findMany({
 			where: {
 				storeId: params.storeId,
 			},
 		});
 
-		return NextResponse.json(makes);
+		return NextResponse.json(driveTypes);
 	} catch (error) {
-		console.log('[MAKES_GET]', error);
+		console.log('[DRIVETYPE_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
-};
+}

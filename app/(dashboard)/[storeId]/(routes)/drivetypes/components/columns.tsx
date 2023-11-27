@@ -1,17 +1,17 @@
-"use client"
+'use client';
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef } from '@tanstack/react-table';
 
-import { CellAction } from "./cell-action"
+import { CellAction } from './cell-action';
 
-export type MakeColumn = {
+export type DriveTypeColumn = {
 	id: string;
 	name: string;
 	// value: string;
 	createdAt: string;
 };
 
-export const columns: ColumnDef<MakeColumn>[] = [
+export const columns: ColumnDef<DriveTypeColumn>[] = [
 	{
 		accessorKey: 'name',
 		header: 'Name',
