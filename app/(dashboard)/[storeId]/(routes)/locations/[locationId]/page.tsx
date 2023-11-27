@@ -1,21 +1,21 @@
 import prismadb from "@/lib/prismadb";
 
-import { MakeForm } from './components/make-form';
+import { LocationForm } from './components/location-form';
 
-const MakePage = async ({ params }: { params: { makeId: string } }) => {
-	const make = await prismadb.make.findUnique({
+const LocationPage = async ({ params }: { params: { locationId: string } }) => {
+	const location = await prismadb.location.findUnique({
 		where: {
-			id: params.makeId,
+			id: params.locationId,
 		},
 	});
 
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<MakeForm initialData={make} />
+				<LocationForm initialData={location} />
 			</div>
 		</div>
 	);
 };
 
-export default MakePage;
+export default LocationPage;

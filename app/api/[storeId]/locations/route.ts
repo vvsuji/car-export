@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs';
 
 import prismadb from '@/lib/prismadb';
- 
+
 export async function POST(
 	req: Request,
 	{ params }: { params: { storeId: string } },
@@ -41,16 +41,16 @@ export async function POST(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
-		const make = await prismadb.make.create({
+		const location = await prismadb.location.create({
 			data: {
 				name,
 				storeId: params.storeId,
 			},
 		});
 
-		return NextResponse.json(make);
+		return NextResponse.json(location);
 	} catch (error) {
-		console.log('[MAKES_POST]', error);
+		console.log('[LOCATIONS_POST]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -64,15 +64,15 @@ export async function GET(
 			return new NextResponse('Store id is required', { status: 400 });
 		}
 
-		const makes = await prismadb.make.findMany({
+		const locations = await prismadb.location.findMany({
 			where: {
 				storeId: params.storeId,
 			},
 		});
 
-		return NextResponse.json(makes);
+		return NextResponse.json(locations);
 	} catch (error) {
-		console.log('[MAKES_GET]', error);
+		console.log('[LOCATIONS_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
-};
+}
