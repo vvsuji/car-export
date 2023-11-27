@@ -12,7 +12,7 @@ export async function POST(
 
     const body = await req.json();
 
-		const {
+    const {
 			name,
 			price,
 			categoryId,
@@ -47,7 +47,7 @@ export async function POST(
       return new NextResponse("Color id is required", { status: 400 });
     }
 
-		if (!makeId) {
+    if (!makeId) {
 			return new NextResponse('Make id is required', { status: 400 });
 		}
 
@@ -66,7 +66,7 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 405 });
     }
 
-		const product = await prismadb.product.create({
+    const product = await prismadb.product.create({
 			data: {
 				name,
 				price,
@@ -83,30 +83,30 @@ export async function POST(
 				},
 			},
 		});
-
-		return NextResponse.json(product);
-	} catch (error) {
-		console.log('[PRODUCTS_POST]', error);
-		return new NextResponse('Internal error', { status: 500 });
-	}
-}
+  
+    return NextResponse.json(product);
+  } catch (error) {
+    console.log('[PRODUCTS_POST]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};
 
 export async function GET(
   req: Request,
   { params }: { params: { storeId: string } },
 ) {
-	try {
-		const { searchParams } = new URL(req.url);
-		const categoryId = searchParams.get('categoryId') || undefined;
-		const colorId = searchParams.get('colorId') || undefined;
-		const makeId = searchParams.get('makeId') || undefined;
-		const isFeatured = searchParams.get('isFeatured');
+  try {
+    const { searchParams } = new URL(req.url)
+    const categoryId = searchParams.get('categoryId') || undefined;
+    const colorId = searchParams.get('colorId') || undefined;
+    const makeId = searchParams.get('makeId') || undefined;
+    const isFeatured = searchParams.get('isFeatured');
 
     if (!params.storeId) {
       return new NextResponse("Store id is required", { status: 400 });
     }
 
-		const products = await prismadb.product.findMany({
+    const products = await prismadb.product.findMany({
 			where: {
 				storeId: params.storeId,
 				categoryId,
@@ -125,10 +125,10 @@ export async function GET(
 				createdAt: 'desc',
 			},
 		});
-
-		return NextResponse.json(products);
-	} catch (error) {
-		console.log('[PRODUCTS_GET]', error);
-		return new NextResponse('Internal error', { status: 500 });
-	}
+  
+    return NextResponse.json(products);
+  } catch (error) {
+    console.log('[PRODUCTS_GET]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
 };

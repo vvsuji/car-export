@@ -109,13 +109,12 @@ export async function PATCH(
 			},
 			data: {
 				name,
-				value,
 			},
 		});
 
 		return NextResponse.json(make);
 	} catch (error) {
-		console.log('[MAKE_PATCH]', error);
+		console.log('[MAKES_PATCH]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 };
