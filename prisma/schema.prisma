@@ -23,7 +23,6 @@ model Store {
   driveTypes           DriveType[]     @relation("StoreToDriveType")
   conditions           Condition[]     @relation("StoreToCondition")
   passengers           Passenger[]     @relation("StoreToPassenger")
-  engineVolumes           EngineVolume[]     @relation("StoreToEngineVolume")
   options           Option[]     @relation("StoreToOption")
   colors          Color[]     @relation("StoreToColor")
   steerings           Steering[]     @relation("StoreToSteering")
@@ -87,8 +86,6 @@ model Product {
   condition        Condition     @relation(fields: [conditionId], references: [id])
   passengerId      String    // Foreign Key to Passenger
   passenger        Passenger      @relation(fields: [passengerId], references: [id])
-  engineVolumeId      String    // Foreign Key to EngineVolume
-  engineVolume        EngineVolume      @relation(fields: [engineVolumeId], references: [id])
   optionId      String    // Foreign Key to Option
   option        Option      @relation(fields: [optionId], references: [id])
   colorId     String    // Foreign Key to Color
@@ -222,18 +219,6 @@ model Passenger {
   id          String    @id @default(uuid())
   storeId     String    // Foreign Key to Store
   store       Store     @relation("StoreToPassenger", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model EngineVolume {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToEngineVolume", fields: [storeId], references: [id])
   name        String
   products    Product[] // Relation to Product model
   createdAt   DateTime  @default(now())

@@ -43,11 +43,6 @@ const ProductPage = async ({
 			storeId: params.storeId,
 		},
 	});
-	const engineVolumes = await prismadb.engineVolume.findMany({
-		where: {
-			storeId: params.storeId,
-		},
-	});
 	const fuelTypes = await prismadb.fuelType.findMany({
 		where: {
 			storeId: params.storeId,
@@ -98,7 +93,6 @@ const ProductPage = async ({
 					makes={makes}
 					conditions={conditions}
 					driveTypes={driveTypes}
-					engineVolumes={engineVolumes}
 					fuelTypes={fuelTypes}
 					locations={locations}
 					models={models}

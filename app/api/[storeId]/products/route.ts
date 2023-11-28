@@ -20,7 +20,6 @@ export async function POST(
 			makeId,
 			conditionId,
 			driveTypeId,
-			engineVolumeId,
 			fuelTypeId,
 			locationId,
 			modelId,
@@ -72,10 +71,6 @@ export async function POST(
 
 		if (!driveTypeId) {
 			return new NextResponse('Drive Type id is required', { status: 400 });
-		}
-
-		if (!engineVolumeId) {
-			return new NextResponse('Engine Volume id is required', { status: 400 });
 		}
 
 		if (!fuelTypeId) {
@@ -132,7 +127,6 @@ export async function POST(
 				makeId,
 				conditionId,
 				driveTypeId,
-				engineVolumeId,
 				fuelTypeId,
 				locationId,
 				modelId,
@@ -168,7 +162,6 @@ export async function GET(
 		const makeId = searchParams.get('makeId') || undefined;
 		const yearId = searchParams.get('yearId') || undefined;
 		const conditionId = searchParams.get('conditionId') || undefined;
-		const engineVolumeId = searchParams.get('engineVolumeId') || undefined;
 		const driveTypeId = searchParams.get('driveTypeId') || undefined;
 		const fuelTypeId = searchParams.get('fuelTypeId') || undefined;
 		const locationId = searchParams.get('locationId') || undefined;
@@ -192,7 +185,6 @@ export async function GET(
 				yearId,
 				conditionId,
 				driveTypeId,
-				engineVolumeId,
 				fuelTypeId,
 				locationId,
 				modelId,

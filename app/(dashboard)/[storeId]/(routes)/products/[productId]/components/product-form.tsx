@@ -12,7 +12,6 @@ import {
 	Color,
 	Condition,
 	DriveType,
-	EngineVolume,
 	FuelType,
 	Image,
 	Location,
@@ -60,7 +59,6 @@ const formSchema = z.object({
 	makeId: z.string().min(1),
 	conditionId: z.string().min(1),
 	driveTypeId: z.string().min(1),
-	engineVolumeId: z.string().min(1),
 	fuelTypeId: z.string().min(1),
 	locationId: z.string().min(1),
 	modelId: z.string().min(1),
@@ -86,7 +84,6 @@ interface ProductFormProps {
 	makes: Make[];
 	conditions: Condition[];
 	driveTypes: DriveType[];
-	engineVolumes: EngineVolume[];
 	fuelTypes: FuelType[];
 	locations: Location[];
 	models: Model[];
@@ -104,7 +101,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 	colors,
 	conditions,
 	driveTypes,
-	engineVolumes,
 	fuelTypes,
 	locations,
 	models,
@@ -139,7 +135,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 				make: '',
 				condition: '',
 				driveType: '',
-				engineVolume: '',
 				fuelType: '',
 				location: '',
 				model: '',
@@ -394,39 +389,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 											{driveTypes?.map((driveType) => (
 												<SelectItem key={driveType.id} value={driveType.id}>
 													{driveType.name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='engineVolumeId'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Engine Volume</FormLabel>
-									<Select
-										disabled={loading}
-										onValueChange={field.onChange}
-										value={field.value}
-										defaultValue={field.value}>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue
-													defaultValue={field.value}
-													placeholder='Select an engine volume'
-												/>
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{engineVolumes?.map((engineVolume) => (
-												<SelectItem
-													key={engineVolume.id}
-													value={engineVolume.id}>
-													{engineVolume.name}
 												</SelectItem>
 											))}
 										</SelectContent>

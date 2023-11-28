@@ -54,11 +54,6 @@ export function MainNav({
 			active: pathname === `/${params.storeId}/drivetypes`,
 		},
 		{
-			href: `/${params.storeId}/enginevolumes`,
-			label: 'EV',
-			active: pathname === `/${params.storeId}/enginevolumes`,
-		},
-		{
 			href: `/${params.storeId}/fueltypes`,
 			label: 'Fuel',
 			active: pathname === `/${params.storeId}/fueltypes`,
@@ -125,7 +120,6 @@ export function MainNav({
 			route.href.includes(`/${params.storeId}/colors`) ||
 			route.href.includes(`/${params.storeId}/conditions`) ||
 			route.href.includes(`/${params.storeId}/drivetypes`) ||
-			route.href.includes(`/${params.storeId}/enginevolumes`) ||
 			route.href.includes(`/${params.storeId}/fueltypes`) ||
 			route.href.includes(`/${params.storeId}/locations`) ||
 			route.href.includes(`/${params.storeId}/makes`) ||

@@ -23,7 +23,6 @@ export async function GET(
 				color: true,
 				condition: true,
 				driveType: true,
-				engineVolume: true,
 				fuelType: true,
 				location: true,
 				model: true,
@@ -100,7 +99,6 @@ export async function PATCH(
 			yearId,
 			conditionId,
 			driveTypeId,
-			engineVolumeId,
 			fuelTypeId,
 			locationId,
 			modelId,
@@ -156,10 +154,6 @@ export async function PATCH(
 			return new NextResponse('Drive Type id is required', { status: 400 });
 		}
 
-		if (!engineVolumeId) {
-			return new NextResponse('Engine Volume id is required', { status: 400 });
-		}
-
 		if (!fuelTypeId) {
 			return new NextResponse('Fuel Type id is required', { status: 400 });
 		}
@@ -212,7 +206,6 @@ export async function PATCH(
 				yearId,
 				conditionId,
 				driveTypeId,
-				engineVolumeId,
 				fuelTypeId,
 				locationId,
 				modelId,
