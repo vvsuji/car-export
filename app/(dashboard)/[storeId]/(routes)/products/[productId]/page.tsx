@@ -33,6 +33,61 @@ const ProductPage = async ({
 			storeId: params.storeId,
 		},
 	});
+	const conditions = await prismadb.condition.findMany({
+		where: {
+			storeId: params.storeId,
+		},
+	});
+	const driveTypes = await prismadb.driveType.findMany({
+		where: {
+			storeId: params.storeId,
+		},
+	});
+	const engineVolumes = await prismadb.engineVolume.findMany({
+		where: {
+			storeId: params.storeId,
+		},
+	});
+	const fuelTypes = await prismadb.fuelType.findMany({
+		where: {
+			storeId: params.storeId,
+		},
+	});
+	const locations = await prismadb.location.findMany({
+		where: {
+			storeId: params.storeId,
+		},
+	});
+	const models = await prismadb.model.findMany({
+		where: {
+			storeId: params.storeId,
+		},
+	});
+	const options = await prismadb.option.findMany({
+		where: {
+			storeId: params.storeId,
+		},
+	});
+	const passengers = await prismadb.passenger.findMany({
+		where: {
+			storeId: params.storeId,
+		},
+	});
+	const steerings = await prismadb.steering.findMany({
+		where: {
+			storeId: params.storeId,
+		},
+	});
+	const transmissions = await prismadb.transmission.findMany({
+		where: {
+			storeId: params.storeId,
+		},
+	});
+	const years = await prismadb.year.findMany({
+		where: {
+			storeId: params.storeId,
+		},
+	});
 
 	return (
 		<div className='flex-col'>
@@ -41,6 +96,17 @@ const ProductPage = async ({
 					categories={categories}
 					colors={colors}
 					makes={makes}
+					conditions={conditions}
+					driveTypes={driveTypes}
+					engineVolumes={engineVolumes}
+					fuelTypes={fuelTypes}
+					locations={locations}
+					models={models}
+					options={options}
+					passengers={passengers}
+					steerings={steerings}
+					transmissions={transmissions}
+					years={years}
 					initialData={product}
 				/>
 			</div>

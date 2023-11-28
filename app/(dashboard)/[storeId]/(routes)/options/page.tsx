@@ -2,11 +2,11 @@ import { format } from "date-fns";
 
 import prismadb from "@/lib/prismadb";
 
-import { MakeColumn } from './components/columns';
-import { MakesClient } from './components/client';
+import { OptionColumn } from './components/columns';
+import { OptionsClient } from './components/client';
 
-const MakesPage = async ({ params }: { params: { storeId: string } }) => {
-	const makes = await prismadb.make.findMany({
+const OptionsPage = async ({ params }: { params: { storeId: string } }) => {
+	const options = await prismadb.option.findMany({
 		where: {
 			storeId: params.storeId,
 		},
@@ -15,7 +15,7 @@ const MakesPage = async ({ params }: { params: { storeId: string } }) => {
 		},
 	});
 
-	const formattedMakes: MakeColumn[] = makes.map((item) => ({
+	const formattedOptions: OptionColumn[] = options.map((item) => ({
 		id: item.id,
 		name: item.name,
 		// value: item.value,
@@ -25,10 +25,10 @@ const MakesPage = async ({ params }: { params: { storeId: string } }) => {
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<MakesClient data={formattedMakes} />
+				<OptionsClient data={formattedOptions} />
 			</div>
 		</div>
 	);
 };
 
-export default MakesPage;
+export default OptionsPage;

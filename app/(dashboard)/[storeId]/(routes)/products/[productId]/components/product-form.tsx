@@ -7,39 +7,73 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { Trash } from "lucide-react"
-import { Category, Color, Image, Product, Make } from "@prisma/client"
-import { useParams, useRouter } from "next/navigation"
-
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Separator } from "@/components/ui/separator"
-import { Heading } from "@/components/ui/heading"
-import { AlertModal } from "@/components/modals/alert-modal"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import ImageUpload from "@/components/ui/image-upload"
-import { Checkbox } from "@/components/ui/checkbox"
+	Category,
+	Color,
+	Condition,
+	DriveType,
+	EngineVolume,
+	FuelType,
+	Image,
+	Location,
+	Make,
+	Model,
+	Option,
+	Passenger,
+	Product,
+	Steering,
+	Transmission,
+	Year,
+} from '@prisma/client';
+import { useParams, useRouter } from 'next/navigation';
+
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
+import { Separator } from '@/components/ui/separator';
+import { Heading } from '@/components/ui/heading';
+import { AlertModal } from '@/components/modals/alert-modal';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
+import ImageUpload from '@/components/ui/image-upload';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const formSchema = z.object({
-  name: z.string().min(1),
-  images: z.object({ url: z.string() }).array(),
-  price: z.coerce.number().min(1),
-  categoryId: z.string().min(1),
-  colorId: z.string().min(1),
-  makeId: z.string().min(1),
-  isFeatured: z.boolean().default(false).optional(),
-  isArchived: z.boolean().default(false).optional()
+	name: z.string().min(1),
+	images: z.object({ url: z.string() }).array(),
+	price: z.coerce.number().min(1),
+	categoryId: z.string().min(1),
+	colorId: z.string().min(1),
+	makeId: z.string().min(1),
+	conditionId: z.string().min(1),
+	driveTypeId: z.string().min(1),
+	engineVolumeId: z.string().min(1),
+	fuelTypeId: z.string().min(1),
+	locationId: z.string().min(1),
+	modelId: z.string().min(1),
+	optionId: z.string().min(1),
+	passengerId: z.string().min(1),
+	steeringId: z.string().min(1),
+	transmissionId: z.string().min(1),
+	yearId: z.string().min(1),
+	isFeatured: z.boolean().default(false).optional(),
+	isArchived: z.boolean().default(false).optional(),
 });
 
-type ProductFormValues = z.infer<typeof formSchema>
+type ProductFormValues = z.infer<typeof formSchema>;
 
 interface ProductFormProps {
 	initialData:
@@ -50,13 +84,35 @@ interface ProductFormProps {
 	categories: Category[];
 	colors: Color[];
 	makes: Make[];
-};
+	conditions: Condition[];
+	driveTypes: DriveType[];
+	engineVolumes: EngineVolume[];
+	fuelTypes: FuelType[];
+	locations: Location[];
+	models: Model[];
+	options: Option[];
+	passengers: Passenger[];
+	steerings: Steering[];
+	transmissions: Transmission[];
+	years: Year[];
+}
 
 export const ProductForm: React.FC<ProductFormProps> = ({
 	initialData,
 	categories,
 	makes,
 	colors,
+	conditions,
+	driveTypes,
+	engineVolumes,
+	fuelTypes,
+	locations,
+	models,
+	options,
+	passengers,
+	steerings,
+	transmissions,
+	years,
 }) => {
 	const params = useParams();
 	const router = useRouter();
@@ -78,9 +134,20 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 				name: '',
 				images: [],
 				price: 0,
-				categoryId: '',
-				colorId: '',
-				makeId: '',
+				category: '',
+				color: '',
+				make: '',
+				condition: '',
+				driveType: '',
+				engineVolume: '',
+				fuelType: '',
+				location: '',
+				model: '',
+				option: '',
+				passenger: '',
+				steering: '',
+				transmission: '',
+				year: '',
 				isFeatured: false,
 				isArchived: false,
 		  };
@@ -265,6 +332,351 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 											{makes.map((make) => (
 												<SelectItem key={make.id} value={make.id}>
 													{make.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='conditionId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Condition</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a condition'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{conditions?.map((condition) => (
+												<SelectItem key={condition.id} value={condition.id}>
+													{condition.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='driveTypeId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Drive Type</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a drive type'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{driveTypes?.map((driveType) => (
+												<SelectItem key={driveType.id} value={driveType.id}>
+													{driveType.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='engineVolumeId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Engine Volume</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select an engine volume'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{engineVolumes?.map((engineVolume) => (
+												<SelectItem
+													key={engineVolume.id}
+													value={engineVolume.id}>
+													{engineVolume.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='fuelTypeId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Fuel Type</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a Fuel Type'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{fuelTypes?.map((fuelType) => (
+												<SelectItem key={fuelType.id} value={fuelType.id}>
+													{fuelType.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='locationId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Location</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a location'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{locations?.map((location) => (
+												<SelectItem key={location.id} value={location.id}>
+													{location.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='modelId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>model</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a model'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{models?.map((model) => (
+												<SelectItem key={model.id} value={model.id}>
+													{model.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='optionId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Option</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select an option'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{options?.map((option) => (
+												<SelectItem key={option.id} value={option.id}>
+													{option.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='passengerId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Passenger</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select passengers'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{passengers?.map((passenger) => (
+												<SelectItem key={passenger.id} value={passenger.id}>
+													{passenger.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='steeringId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Steering</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a steering'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{steerings?.map((steering) => (
+												<SelectItem key={steering.id} value={steering.id}>
+													{steering.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='transmissionId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Transmission</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a transmission'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{transmissions?.map((transmission) => (
+												<SelectItem
+													key={transmission.id}
+													value={transmission.id}>
+													{transmission.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='yearId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Year</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a year'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{years?.map((year) => (
+												<SelectItem key={year.id} value={year.id}>
+													{year.name}
 												</SelectItem>
 											))}
 										</SelectContent>

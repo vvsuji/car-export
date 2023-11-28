@@ -2,11 +2,15 @@ import { format } from "date-fns";
 
 import prismadb from "@/lib/prismadb";
 
-import { MakeColumn } from './components/columns';
-import { MakesClient } from './components/client';
+import { TransmissionColumn } from './components/columns';
+import { TransmissionsClient } from './components/client';
 
-const MakesPage = async ({ params }: { params: { storeId: string } }) => {
-	const makes = await prismadb.make.findMany({
+const TransmissionsPage = async ({
+	params,
+}: {
+	params: { storeId: string };
+}) => {
+	const transmissions = await prismadb.transmission.findMany({
 		where: {
 			storeId: params.storeId,
 		},
@@ -15,20 +19,22 @@ const MakesPage = async ({ params }: { params: { storeId: string } }) => {
 		},
 	});
 
-	const formattedMakes: MakeColumn[] = makes.map((item) => ({
-		id: item.id,
-		name: item.name,
-		// value: item.value,
-		createdAt: format(item.createdAt, 'MMMM do, yyyy'),
-	}));
+	const formattedTransmissions: TransmissionColumn[] = transmissions.map(
+		(item) => ({
+			id: item.id,
+			name: item.name,
+			// value: item.value,
+			createdAt: format(item.createdAt, 'MMMM do, yyyy'),
+		}),
+	);
 
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<MakesClient data={formattedMakes} />
+				<TransmissionsClient data={formattedTransmissions} />
 			</div>
 		</div>
 	);
 };
 
-export default MakesPage;
+export default TransmissionsPage;

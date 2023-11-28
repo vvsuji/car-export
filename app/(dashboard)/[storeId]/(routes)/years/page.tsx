@@ -2,11 +2,11 @@ import { format } from "date-fns";
 
 import prismadb from "@/lib/prismadb";
 
-import { MakeColumn } from './components/columns';
-import { MakesClient } from './components/client';
+import { YearColumn } from './components/columns';
+import { YearsClient } from './components/client';
 
-const MakesPage = async ({ params }: { params: { storeId: string } }) => {
-	const makes = await prismadb.make.findMany({
+const YearsPage = async ({ params }: { params: { storeId: string } }) => {
+	const years = await prismadb.year.findMany({
 		where: {
 			storeId: params.storeId,
 		},
@@ -15,7 +15,7 @@ const MakesPage = async ({ params }: { params: { storeId: string } }) => {
 		},
 	});
 
-	const formattedMakes: MakeColumn[] = makes.map((item) => ({
+	const formattedYears: YearColumn[] = years.map((item) => ({
 		id: item.id,
 		name: item.name,
 		// value: item.value,
@@ -25,10 +25,10 @@ const MakesPage = async ({ params }: { params: { storeId: string } }) => {
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<MakesClient data={formattedMakes} />
+				<YearsClient data={formattedYears} />
 			</div>
 		</div>
 	);
 };
 
-export default MakesPage;
+export default YearsPage;

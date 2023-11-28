@@ -5,20 +5,20 @@ import { auth } from "@clerk/nextjs";
 
 export async function GET(
 	req: Request,
-	{ params }: { params: { makeId: string } },
+	{ params }: { params: { yearId: string } },
 ) {
 	try {
-		if (!params.makeId) {
-			return new NextResponse('Make id is required', { status: 400 });
+		if (!params.yearId) {
+			return new NextResponse('Year id is required', { status: 400 });
 		}
 
-		const make = await prismadb.make.findUnique({
+		const year = await prismadb.year.findUnique({
 			where: {
-				id: params.makeId,
+				id: params.yearId,
 			},
 		});
 
-		return NextResponse.json(make);
+		return NextResponse.json(year);
 	} catch (error) {
 		console.log('[_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
@@ -27,7 +27,7 @@ export async function GET(
 
 export async function DELETE(
 	req: Request,
-	{ params }: { params: { makeId: string; storeId: string } },
+	{ params }: { params: { yearId: string; storeId: string } },
 ) {
 	try {
 		const { userId } = auth();
@@ -36,8 +36,8 @@ export async function DELETE(
 			return new NextResponse('Unauthenticated', { status: 403 });
 		}
 
-		if (!params.makeId) {
-			return new NextResponse('Make id is required', { status: 400 });
+		if (!params.yearId) {
+			return new NextResponse('Year id is required', { status: 400 });
 		}
 
 		const storeByUserId = await prismadb.store.findFirst({
@@ -51,15 +51,15 @@ export async function DELETE(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
-		const make = await prismadb.make.delete({
+		const year = await prismadb.year.delete({
 			where: {
-				id: params.makeId,
+				id: params.yearId,
 			},
 		});
 
-		return NextResponse.json(make);
+		return NextResponse.json(year);
 	} catch (error) {
-		console.log('[MAKE_DELETE]', error);
+		console.log('[YEAR_DELETE]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 };
@@ -67,7 +67,7 @@ export async function DELETE(
 
 export async function PATCH(
 	req: Request,
-	{ params }: { params: { makeId: string; storeId: string } },
+	{ params }: { params: { yearId: string; storeId: string } },
 ) {
 	try {
 		const { userId } = auth();
@@ -88,8 +88,8 @@ export async function PATCH(
 		// 	return new NextResponse('Value is required', { status: 400 });
 		// }
 
-		if (!params.makeId) {
-			return new NextResponse('Make id is required', { status: 400 });
+		if (!params.yearId) {
+			return new NextResponse('Year id is required', { status: 400 });
 		}
 
 		const storeByUserId = await prismadb.store.findFirst({
@@ -103,18 +103,18 @@ export async function PATCH(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
-		const make = await prismadb.make.update({
+		const year = await prismadb.year.update({
 			where: {
-				id: params.makeId,
+				id: params.yearId,
 			},
 			data: {
 				name,
 			},
 		});
 
-		return NextResponse.json(make);
+		return NextResponse.json(year);
 	} catch (error) {
-		console.log('[MAKE_PATCH]', error);
+		console.log('[YEAR_PATCH]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 };

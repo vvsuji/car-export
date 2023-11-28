@@ -41,16 +41,16 @@ export async function POST(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
-		const make = await prismadb.make.create({
+		const model = await prismadb.model.create({
 			data: {
 				name,
 				storeId: params.storeId,
 			},
 		});
 
-		return NextResponse.json(make);
+		return NextResponse.json(model);
 	} catch (error) {
-		console.log('[MAKES_POST]', error);
+		console.log('[MODELS_POST]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -64,15 +64,15 @@ export async function GET(
 			return new NextResponse('Store id is required', { status: 400 });
 		}
 
-		const makes = await prismadb.make.findMany({
+		const models = await prismadb.model.findMany({
 			where: {
 				storeId: params.storeId,
 			},
 		});
 
-		return NextResponse.json(makes);
+		return NextResponse.json(models);
 	} catch (error) {
-		console.log('[MAKES_GET]', error);
+		console.log('[MODELS_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 };
