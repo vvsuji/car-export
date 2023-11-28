@@ -1,39 +1,39 @@
-"use client"
+'use client';
 
-import * as z from "zod"
-import axios from "axios"
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
-import { Trash } from "lucide-react"
+import * as z from 'zod';
+import axios from 'axios';
+import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { Trash } from 'lucide-react';
 import { Option } from '@prisma/client';
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter } from 'next/navigation';
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Separator } from "@/components/ui/separator"
-import { Heading } from "@/components/ui/heading"
-import { AlertModal } from "@/components/modals/alert-modal"
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
+import { Separator } from '@/components/ui/separator';
+import { Heading } from '@/components/ui/heading';
+import { AlertModal } from '@/components/modals/alert-modal';
 
 const formSchema = z.object({
-  name: z.string().min(1),
-  // value: z.string().min(1),
+	name: z.string().min(1),
+	// value: z.string().min(1),
 });
 
 type OptionFormValues = z.infer<typeof formSchema>;
 
 interface OptionFormProps {
 	initialData: Option | null;
-};
+}
 
 export const OptionForm: React.FC<OptionFormProps> = ({ initialData }) => {
 	const params = useParams();
@@ -83,7 +83,9 @@ export const OptionForm: React.FC<OptionFormProps> = ({ initialData }) => {
 			router.push(`/${params.storeId}/options`);
 			toast.success('Option deleted.');
 		} catch (error: any) {
-			toast.error('Make sure you removed all products using this option first.');
+			toast.error(
+				'Make sure you removed all products using this option first.',
+			);
 		} finally {
 			setLoading(false);
 			setOpen(false);
@@ -133,23 +135,6 @@ export const OptionForm: React.FC<OptionFormProps> = ({ initialData }) => {
 								</FormItem>
 							)}
 						/>
-						{/* <FormField
-							control={form.control}
-							name='value'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Value</FormLabel>
-									<FormControl>
-										<Input
-											disabled={loading}
-											placeholder='Option value'
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/> */}
 					</div>
 					<Button disabled={loading} className='ml-auto' type='submit'>
 						{action}

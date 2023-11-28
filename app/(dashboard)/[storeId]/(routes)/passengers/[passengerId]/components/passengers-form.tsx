@@ -133,23 +133,6 @@ export const PassengerForm: React.FC<PassengerFormProps> = ({ initialData }) => 
 								</FormItem>
 							)}
 						/>
-						{/* <FormField
-							control={form.control}
-							name='value'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Value</FormLabel>
-									<FormControl>
-										<Input
-											disabled={loading}
-											placeholder='Passenger value'
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/> */}
 					</div>
 					<Button disabled={loading} className='ml-auto' type='submit'>
 						{action}

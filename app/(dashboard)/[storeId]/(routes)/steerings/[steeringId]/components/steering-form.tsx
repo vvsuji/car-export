@@ -1,39 +1,39 @@
-"use client"
+'use client';
 
-import * as z from "zod"
-import axios from "axios"
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
-import { Trash } from "lucide-react"
+import * as z from 'zod';
+import axios from 'axios';
+import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { Trash } from 'lucide-react';
 import { Steering } from '@prisma/client';
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter } from 'next/navigation';
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Separator } from "@/components/ui/separator"
-import { Heading } from "@/components/ui/heading"
-import { AlertModal } from "@/components/modals/alert-modal"
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
+import { Separator } from '@/components/ui/separator';
+import { Heading } from '@/components/ui/heading';
+import { AlertModal } from '@/components/modals/alert-modal';
 
 const formSchema = z.object({
-  name: z.string().min(1),
-  // value: z.string().min(1),
+	name: z.string().min(1),
+	// value: z.string().min(1),
 });
 
 type SteeringFormValues = z.infer<typeof formSchema>;
 
 interface SteeringFormProps {
 	initialData: Steering | null;
-};
+}
 
 export const SteeringForm: React.FC<SteeringFormProps> = ({ initialData }) => {
 	const params = useParams();
@@ -78,12 +78,16 @@ export const SteeringForm: React.FC<SteeringFormProps> = ({ initialData }) => {
 	const onDelete = async () => {
 		try {
 			setLoading(true);
-			await axios.delete(`/api/${params.storeId}/steerings/${params.steeringId}`);
+			await axios.delete(
+				`/api/${params.storeId}/steerings/${params.steeringId}`,
+			);
 			router.refresh();
 			router.push(`/${params.storeId}/steerings`);
 			toast.success('Steering deleted.');
 		} catch (error: any) {
-			toast.error('Make sure you removed all products using this steering first.');
+			toast.error(
+				'Make sure you removed all products using this steering first.',
+			);
 		} finally {
 			setLoading(false);
 			setOpen(false);
@@ -133,23 +137,6 @@ export const SteeringForm: React.FC<SteeringFormProps> = ({ initialData }) => {
 								</FormItem>
 							)}
 						/>
-						{/* <FormField
-							control={form.control}
-							name='value'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Value</FormLabel>
-									<FormControl>
-										<Input
-											disabled={loading}
-											placeholder='Steering value'
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/> */}
 					</div>
 					<Button disabled={loading} className='ml-auto' type='submit'>
 						{action}
