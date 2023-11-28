@@ -281,6 +281,37 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 						/>
 						<FormField
 							control={form.control}
+							name='yearId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Year</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a year'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{years.map((year) => (
+												<SelectItem key={year.id} value={year.id}>
+													{year.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
 							name='colorId'
 							render={({ field }) => (
 								<FormItem>
