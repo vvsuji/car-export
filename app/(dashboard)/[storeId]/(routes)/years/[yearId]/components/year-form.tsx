@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { Trash } from "lucide-react"
-import { Make } from '@prisma/client';
+import { Year } from '@prisma/client';
 import { useParams, useRouter } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
@@ -29,44 +29,44 @@ const formSchema = z.object({
   // value: z.string().min(1),
 });
 
-type MakeFormValues = z.infer<typeof formSchema>;
+type YearFormValues = z.infer<typeof formSchema>;
 
-interface MakeFormProps {
-	initialData: Make | null;
+interface YearFormProps {
+	initialData: Year | null;
 };
 
-export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
+export const YearForm: React.FC<YearFormProps> = ({ initialData }) => {
 	const params = useParams();
 	const router = useRouter();
 
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const title = initialData ? 'Edit make' : 'Create make';
-	const description = initialData ? 'Edit a make.' : 'Add a new make';
-	const toastMessage = initialData ? 'Make updated.' : 'Make created.';
+	const title = initialData ? 'Edit year' : 'Create year';
+	const description = initialData ? 'Edit a year.' : 'Add a new year';
+	const toastMessage = initialData ? 'Year updated.' : 'Year created.';
 	const action = initialData ? 'Save changes' : 'Create';
 
-	const form = useForm<MakeFormValues>({
+	const form = useForm<YearFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: initialData || {
 			name: '',
 		},
 	});
 
-	const onSubmit = async (data: MakeFormValues) => {
+	const onSubmit = async (data: YearFormValues) => {
 		try {
 			setLoading(true);
 			if (initialData) {
 				await axios.patch(
-					`/api/${params.storeId}/makes/${params.makeId}`,
+					`/api/${params.storeId}/years/${params.yearId}`,
 					data,
 				);
 			} else {
-				await axios.post(`/api/${params.storeId}/makes`, data);
+				await axios.post(`/api/${params.storeId}/years`, data);
 			}
 			router.refresh();
-			router.push(`/${params.storeId}/makes`);
+			router.push(`/${params.storeId}/years`);
 			toast.success(toastMessage);
 		} catch (error: any) {
 			toast.error('Something went wrong.');
@@ -78,12 +78,12 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 	const onDelete = async () => {
 		try {
 			setLoading(true);
-			await axios.delete(`/api/${params.storeId}/makes/${params.makeId}`);
+			await axios.delete(`/api/${params.storeId}/years/${params.yearId}`);
 			router.refresh();
-			router.push(`/${params.storeId}/makes`);
-			toast.success('Make deleted.');
+			router.push(`/${params.storeId}/years`);
+			toast.success('Year deleted.');
 		} catch (error: any) {
-			toast.error('Make sure you removed all products using this make first.');
+			toast.error('Make sure you removed all products using this year first.');
 		} finally {
 			setLoading(false);
 			setOpen(false);
@@ -125,7 +125,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Make name'
+											placeholder='Year name'
 											{...field}
 										/>
 									</FormControl>
@@ -142,7 +142,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Make value'
+											placeholder='Year value'
 											{...field}
 										/>
 									</FormControl>

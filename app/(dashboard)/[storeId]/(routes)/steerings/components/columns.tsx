@@ -4,14 +4,14 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { CellAction } from "./cell-action"
 
-export type MakeColumn = {
+export type SteeringColumn = {
 	id: string;
 	name: string;
 	// value: string;
 	createdAt: string;
 };
 
-export const columns: ColumnDef<MakeColumn>[] = [
+export const columns: ColumnDef<SteeringColumn>[] = [
 	{
 		accessorKey: 'name',
 		header: 'Name',

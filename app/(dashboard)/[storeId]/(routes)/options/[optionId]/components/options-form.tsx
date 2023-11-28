@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { Trash } from "lucide-react"
-import { Make } from '@prisma/client';
+import { Option } from '@prisma/client';
 import { useParams, useRouter } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
@@ -29,44 +29,44 @@ const formSchema = z.object({
   // value: z.string().min(1),
 });
 
-type MakeFormValues = z.infer<typeof formSchema>;
+type OptionFormValues = z.infer<typeof formSchema>;
 
-interface MakeFormProps {
-	initialData: Make | null;
+interface OptionFormProps {
+	initialData: Option | null;
 };
 
-export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
+export const OptionForm: React.FC<OptionFormProps> = ({ initialData }) => {
 	const params = useParams();
 	const router = useRouter();
 
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const title = initialData ? 'Edit make' : 'Create make';
-	const description = initialData ? 'Edit a make.' : 'Add a new make';
-	const toastMessage = initialData ? 'Make updated.' : 'Make created.';
+	const title = initialData ? 'Edit option' : 'Create option';
+	const description = initialData ? 'Edit a option.' : 'Add a new option';
+	const toastMessage = initialData ? 'Option updated.' : 'Option created.';
 	const action = initialData ? 'Save changes' : 'Create';
 
-	const form = useForm<MakeFormValues>({
+	const form = useForm<OptionFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: initialData || {
 			name: '',
 		},
 	});
 
-	const onSubmit = async (data: MakeFormValues) => {
+	const onSubmit = async (data: OptionFormValues) => {
 		try {
 			setLoading(true);
 			if (initialData) {
 				await axios.patch(
-					`/api/${params.storeId}/makes/${params.makeId}`,
+					`/api/${params.storeId}/options/${params.optionId}`,
 					data,
 				);
 			} else {
-				await axios.post(`/api/${params.storeId}/makes`, data);
+				await axios.post(`/api/${params.storeId}/options`, data);
 			}
 			router.refresh();
-			router.push(`/${params.storeId}/makes`);
+			router.push(`/${params.storeId}/options`);
 			toast.success(toastMessage);
 		} catch (error: any) {
 			toast.error('Something went wrong.');
@@ -78,12 +78,12 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 	const onDelete = async () => {
 		try {
 			setLoading(true);
-			await axios.delete(`/api/${params.storeId}/makes/${params.makeId}`);
+			await axios.delete(`/api/${params.storeId}/options/${params.optionId}`);
 			router.refresh();
-			router.push(`/${params.storeId}/makes`);
-			toast.success('Make deleted.');
+			router.push(`/${params.storeId}/options`);
+			toast.success('Option deleted.');
 		} catch (error: any) {
-			toast.error('Make sure you removed all products using this make first.');
+			toast.error('Make sure you removed all products using this option first.');
 		} finally {
 			setLoading(false);
 			setOpen(false);
@@ -125,7 +125,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Make name'
+											placeholder='Option name'
 											{...field}
 										/>
 									</FormControl>
@@ -142,7 +142,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Make value'
+											placeholder='Option value'
 											{...field}
 										/>
 									</FormControl>
