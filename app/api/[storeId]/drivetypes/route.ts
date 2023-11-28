@@ -37,26 +37,16 @@ export async function POST(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
-<<<<<<<< HEAD:app/api/[storeId]/drivetypes/route.ts
 		const driveType = await prismadb.driveType.create({
-========
-		const option = await prismadb.option.create({
->>>>>>>> 53f550f856d54e612a3c99786edcda9ac800bf03:app/api/[storeId]/options/route.ts
 			data: {
 				name,
 				storeId: params.storeId,
 			},
 		});
 
-<<<<<<<< HEAD:app/api/[storeId]/drivetypes/route.ts
 		return NextResponse.json(driveType);
 	} catch (error) {
 		console.log('[DRIVETYPES_POST]', error);
-========
-		return NextResponse.json(option);
-	} catch (error) {
-		console.log('[OPTIONS_POST]', error);
->>>>>>>> 53f550f856d54e612a3c99786edcda9ac800bf03:app/api/[storeId]/options/route.ts
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -70,25 +60,15 @@ export async function GET(
 			return new NextResponse('Store id is required', { status: 400 });
 		}
 
-<<<<<<<< HEAD:app/api/[storeId]/drivetypes/route.ts
 		const driveTypes = await prismadb.driveType.findMany({
-========
-		const options = await prismadb.option.findMany({
->>>>>>>> 53f550f856d54e612a3c99786edcda9ac800bf03:app/api/[storeId]/options/route.ts
 			where: {
 				storeId: params.storeId,
 			},
 		});
 
-<<<<<<<< HEAD:app/api/[storeId]/drivetypes/route.ts
 		return NextResponse.json(driveTypes);
 	} catch (error) {
 		console.log('[DRIVETYPE_GET]', error);
-========
-		return NextResponse.json(options);
-	} catch (error) {
-		console.log('[OPTIONS_GET]', error);
->>>>>>>> 53f550f856d54e612a3c99786edcda9ac800bf03:app/api/[storeId]/options/route.ts
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
