@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { Trash } from "lucide-react"
-import { Make } from '@prisma/client';
+import { Steering } from '@prisma/client';
 import { useParams, useRouter } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
@@ -29,44 +29,44 @@ const formSchema = z.object({
   // value: z.string().min(1),
 });
 
-type MakeFormValues = z.infer<typeof formSchema>;
+type SteeringFormValues = z.infer<typeof formSchema>;
 
-interface MakeFormProps {
-	initialData: Make | null;
+interface SteeringFormProps {
+	initialData: Steering | null;
 };
 
-export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
+export const SteeringForm: React.FC<SteeringFormProps> = ({ initialData }) => {
 	const params = useParams();
 	const router = useRouter();
 
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const title = initialData ? 'Edit make' : 'Create make';
-	const description = initialData ? 'Edit a make.' : 'Add a new make';
-	const toastMessage = initialData ? 'Make updated.' : 'Make created.';
+	const title = initialData ? 'Edit steering' : 'Create steering';
+	const description = initialData ? 'Edit a steering.' : 'Add a new steering';
+	const toastMessage = initialData ? 'Steering updated.' : 'Steering created.';
 	const action = initialData ? 'Save changes' : 'Create';
 
-	const form = useForm<MakeFormValues>({
+	const form = useForm<SteeringFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: initialData || {
 			name: '',
 		},
 	});
 
-	const onSubmit = async (data: MakeFormValues) => {
+	const onSubmit = async (data: SteeringFormValues) => {
 		try {
 			setLoading(true);
 			if (initialData) {
 				await axios.patch(
-					`/api/${params.storeId}/makes/${params.makeId}`,
+					`/api/${params.storeId}/steerings/${params.steeringId}`,
 					data,
 				);
 			} else {
-				await axios.post(`/api/${params.storeId}/makes`, data);
+				await axios.post(`/api/${params.storeId}/steerings`, data);
 			}
 			router.refresh();
-			router.push(`/${params.storeId}/makes`);
+			router.push(`/${params.storeId}/steerings`);
 			toast.success(toastMessage);
 		} catch (error: any) {
 			toast.error('Something went wrong.');
@@ -78,12 +78,12 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 	const onDelete = async () => {
 		try {
 			setLoading(true);
-			await axios.delete(`/api/${params.storeId}/makes/${params.makeId}`);
+			await axios.delete(`/api/${params.storeId}/steerings/${params.steeringId}`);
 			router.refresh();
-			router.push(`/${params.storeId}/makes`);
-			toast.success('Make deleted.');
+			router.push(`/${params.storeId}/steerings`);
+			toast.success('Steering deleted.');
 		} catch (error: any) {
-			toast.error('Make sure you removed all products using this make first.');
+			toast.error('Make sure you removed all products using this steering first.');
 		} finally {
 			setLoading(false);
 			setOpen(false);
@@ -125,7 +125,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Make name'
+											placeholder='Steering name'
 											{...field}
 										/>
 									</FormControl>
@@ -142,7 +142,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Make value'
+											placeholder='Steering value'
 											{...field}
 										/>
 									</FormControl>

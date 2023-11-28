@@ -62,8 +62,35 @@ model Product {
   isArchived  Boolean   @default(false)
   makeId      String    // Foreign Key to Make
   make        Make      @relation(fields: [makeId], references: [id])
+<<<<<<< HEAD
   colorId     String    // Foreign Key to Color
   color       Color     @relation(fields: [colorId], references: [id])
+=======
+  modelId      String    // Foreign Key to Model
+  model        Model      @relation(fields: [modelId], references: [id])
+  yearId      String    // Foreign Key to Year
+  year        Year      @relation(fields: [yearId], references: [id])
+  fuelTypeId      String    // Foreign Key to FuelType
+  fuelType        FuelType      @relation(fields: [fuelTypeId], references: [id])
+  transmissionId      String    // Foreign Key to Transmission
+  transmission        Transmission      @relation(fields: [transmissionId], references: [id])
+  driveTypeId      String    // Foreign Key to DriveType
+  driveType        DriveType      @relation(fields: [driveTypeId], references: [id])
+  conditionId      String    // Foreign Key to Condition
+  condition        Condition     @relation(fields: [conditionId], references: [id])
+  passengerId      String    // Foreign Key to Passenger
+  passenger        Passenger      @relation(fields: [passengerId], references: [id])
+  engineVolumeId      String    // Foreign Key to EngineVolume
+  engineVolume        EngineVolume      @relation(fields: [engineVolumeId], references: [id])
+  optionId      String    // Foreign Key to Option
+  option        Option      @relation(fields: [optionId], references: [id])
+  colorId     String    // Foreign Key to Color
+  color       Color     @relation(fields: [colorId], references: [id])
+  steeringId      String    // Foreign Key to Steering
+  steering        Steering      @relation(fields: [steeringId], references: [id])
+  locationId      String    // Foreign Key to Location
+  location        Location      @relation(fields: [locationId], references: [id])
+>>>>>>> 53f550f856d54e612a3c99786edcda9ac800bf03
   images      Image[]   // Relation to Image model
   orderItems  OrderItem[]   // Relation to Order model
   createdAt   DateTime  @default(now())

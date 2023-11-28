@@ -44,11 +44,13 @@ export const DriveTypeForm: React.FC<DriveTypeFormProps> = ({
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const title = initialData ? 'Edit condition' : 'Create condition';
-	const description = initialData ? 'Edit a condition.' : 'Add a new condition';
+	const title = initialData ? 'Edit drive type' : 'Create drive type';
+	const description = initialData
+		? 'Edit a drive type.'
+		: 'Add a new drive type';
 	const toastMessage = initialData
-		? 'Condition updated.'
-		: 'Condition created.';
+		? 'Drive type updated.'
+		: 'Drive type created.';
 	const action = initialData ? 'Save changes' : 'Create';
 
 	const form = useForm<DriveTypeFormValues>({
@@ -87,10 +89,10 @@ export const DriveTypeForm: React.FC<DriveTypeFormProps> = ({
 			);
 			router.refresh();
 			router.push(`/${params.storeId}/drivetypes`);
-			toast.success('Condition deleted.');
+			toast.success('Drive type deleted.');
 		} catch (error: any) {
 			toast.error(
-				'Condition sure you removed all products using this condition first.',
+				'Drive type sure you removed all products using this drive type first.',
 			);
 		} finally {
 			setLoading(false);
@@ -133,7 +135,7 @@ export const DriveTypeForm: React.FC<DriveTypeFormProps> = ({
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Condition name'
+											placeholder='Drive type name'
 											{...field}
 										/>
 									</FormControl>
@@ -150,7 +152,7 @@ export const DriveTypeForm: React.FC<DriveTypeFormProps> = ({
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Condition value'
+											placeholder='Drive type value'
 											{...field}
 										/>
 									</FormControl>

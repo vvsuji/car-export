@@ -130,6 +130,7 @@ export async function POST(
 				categoryId,
 				colorId,
 				makeId,
+<<<<<<< HEAD
 				conditionId,
 				driveTypeId,
 				engineVolumeId,
@@ -141,6 +142,19 @@ export async function POST(
 				steeringId,
 				transmissionId,
 				yearId,
+=======
+				// conditionId,
+				// driveTypeId,
+				// engineVolumeId,
+				// fuelTypeId,
+				// locationId,
+				// modelId,
+				// optionId,
+				// passengerId,
+				// steeringId,
+				// transmissionId,
+				// yearId,
+>>>>>>> 53f550f856d54e612a3c99786edcda9ac800bf03
 				storeId: params.storeId,
 				images: {
 					createMany: {
@@ -231,3 +245,138 @@ export async function GET(
 		return new NextResponse('Internal error', { status: 500 });
 	}
 };
+
+// import { NextResponse } from 'next/server';
+// import { auth } from '@clerk/nextjs';
+
+// import prismadb from '@/lib/prismadb';
+
+// export async function POST(
+// 	req: Request,
+// 	{ params }: { params: { storeId: string } },
+// ) {
+// 	try {
+// 		const { userId } = auth();
+
+// 		const body = await req.json();
+
+// 		const {
+// 			name,
+// 			price,
+// 			categoryId,
+// 			colorId,
+// 			makeId,
+// 			images,
+// 			isFeatured,
+// 			isArchived,
+// 		} = body;
+
+// 		if (!userId) {
+// 			return new NextResponse('Unauthenticated', { status: 403 });
+// 		}
+
+// 		if (!name) {
+// 			return new NextResponse('Name is required', { status: 400 });
+// 		}
+
+// 		if (!images || !images.length) {
+// 			return new NextResponse('Images are required', { status: 400 });
+// 		}
+
+// 		if (!price) {
+// 			return new NextResponse('Price is required', { status: 400 });
+// 		}
+
+// 		if (!categoryId) {
+// 			return new NextResponse('Category id is required', { status: 400 });
+// 		}
+
+// 		if (!colorId) {
+// 			return new NextResponse('Color id is required', { status: 400 });
+// 		}
+
+// 		if (!makeId) {
+// 			return new NextResponse('Make id is required', { status: 400 });
+// 		}
+
+// 		if (!params.storeId) {
+// 			return new NextResponse('Store id is required', { status: 400 });
+// 		}
+
+// 		const storeByUserId = await prismadb.store.findFirst({
+// 			where: {
+// 				id: params.storeId,
+// 				userId,
+// 			},
+// 		});
+
+// 		if (!storeByUserId) {
+// 			return new NextResponse('Unauthorized', { status: 405 });
+// 		}
+
+// 		const product = await prismadb.product.create({
+// 			data: {
+// 				name,
+// 				price,
+// 				isFeatured,
+// 				isArchived,
+// 				categoryId,
+// 				colorId,
+// 				makeId,
+// 				storeId: params.storeId,
+// 				images: {
+// 					createMany: {
+// 						data: [...images.map((image: { url: string }) => image)],
+// 					},
+// 				},
+// 			},
+// 		});
+
+// 		return NextResponse.json(product);
+// 	} catch (error) {
+// 		console.log('[PRODUCTS_POST]', error);
+// 		return new NextResponse('Internal error', { status: 500 });
+// 	}
+// }
+
+// export async function GET(
+// 	req: Request,
+// 	{ params }: { params: { storeId: string } },
+// ) {
+// 	try {
+// 		const { searchParams } = new URL(req.url);
+// 		const categoryId = searchParams.get('categoryId') || undefined;
+// 		const colorId = searchParams.get('colorId') || undefined;
+// 		const makeId = searchParams.get('makeId') || undefined;
+// 		const isFeatured = searchParams.get('isFeatured');
+
+// 		if (!params.storeId) {
+// 			return new NextResponse('Store id is required', { status: 400 });
+// 		}
+
+// 		const products = await prismadb.product.findMany({
+// 			where: {
+// 				storeId: params.storeId,
+// 				categoryId,
+// 				colorId,
+// 				makeId,
+// 				isFeatured: isFeatured ? true : undefined,
+// 				isArchived: false,
+// 			},
+// 			include: {
+// 				images: true,
+// 				category: true,
+// 				color: true,
+// 				make: true,
+// 			},
+// 			orderBy: {
+// 				createdAt: 'desc',
+// 			},
+// 		});
+
+// 		return NextResponse.json(products);
+// 	} catch (error) {
+// 		console.log('[PRODUCTS_GET]', error);
+// 		return new NextResponse('Internal error', { status: 500 });
+// 	}
+// }

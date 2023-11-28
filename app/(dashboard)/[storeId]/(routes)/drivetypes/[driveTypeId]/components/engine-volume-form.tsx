@@ -1,72 +1,78 @@
-"use client"
+'use client';
 
-import * as z from "zod"
-import axios from "axios"
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
-import { Trash } from "lucide-react"
-import { Make } from '@prisma/client';
-import { useParams, useRouter } from "next/navigation"
+import * as z from 'zod';
+import axios from 'axios';
+import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { Trash } from 'lucide-react';
+import { EngineVolume } from '@prisma/client';
+import { useParams, useRouter } from 'next/navigation';
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Separator } from "@/components/ui/separator"
-import { Heading } from "@/components/ui/heading"
-import { AlertModal } from "@/components/modals/alert-modal"
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
+import { Separator } from '@/components/ui/separator';
+import { Heading } from '@/components/ui/heading';
+import { AlertModal } from '@/components/modals/alert-modal';
 
 const formSchema = z.object({
-  name: z.string().min(1),
-  // value: z.string().min(1),
+	name: z.string().min(1),
+	// value: z.string().min(1),
 });
 
-type MakeFormValues = z.infer<typeof formSchema>;
+type EngineVolumeFormValues = z.infer<typeof formSchema>;
 
-interface MakeFormProps {
-	initialData: Make | null;
-};
+interface EngineVolumeFormProps {
+	initialData: EngineVolume | null;
+}
 
-export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
+export const EngineVolumeForm: React.FC<EngineVolumeFormProps> = ({
+	initialData,
+}) => {
 	const params = useParams();
 	const router = useRouter();
 
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const title = initialData ? 'Edit make' : 'Create make';
-	const description = initialData ? 'Edit a make.' : 'Add a new make';
-	const toastMessage = initialData ? 'Make updated.' : 'Make created.';
+	const title = initialData ? 'Edit engine volume' : 'Create engine volume';
+	const description = initialData
+		? 'Edit a engine volume.'
+		: 'Add a new engine volume';
+	const toastMessage = initialData
+		? 'Engine volume updated.'
+		: 'Engine volume created.';
 	const action = initialData ? 'Save changes' : 'Create';
 
-	const form = useForm<MakeFormValues>({
+	const form = useForm<EngineVolumeFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: initialData || {
 			name: '',
 		},
 	});
 
-	const onSubmit = async (data: MakeFormValues) => {
+	const onSubmit = async (data: EngineVolumeFormValues) => {
 		try {
 			setLoading(true);
 			if (initialData) {
 				await axios.patch(
-					`/api/${params.storeId}/makes/${params.makeId}`,
+					`/api/${params.storeId}/enginevolumes/${params.engineVolumeId}`,
 					data,
 				);
 			} else {
-				await axios.post(`/api/${params.storeId}/makes`, data);
+				await axios.post(`/api/${params.storeId}/enginevolumes`, data);
 			}
 			router.refresh();
-			router.push(`/${params.storeId}/makes`);
+			router.push(`/${params.storeId}/enginevolumes`);
 			toast.success(toastMessage);
 		} catch (error: any) {
 			toast.error('Something went wrong.');
@@ -78,12 +84,16 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 	const onDelete = async () => {
 		try {
 			setLoading(true);
-			await axios.delete(`/api/${params.storeId}/makes/${params.makeId}`);
+			await axios.delete(
+				`/api/${params.storeId}/enginevolumes/${params.engineVolumeId}`,
+			);
 			router.refresh();
-			router.push(`/${params.storeId}/makes`);
-			toast.success('Make deleted.');
+			router.push(`/${params.storeId}/enginevolumes`);
+			toast.success('Engine volume deleted.');
 		} catch (error: any) {
-			toast.error('Make sure you removed all products using this make first.');
+			toast.error(
+				'Engine volume sure you removed all products using this engine volume first.',
+			);
 		} finally {
 			setLoading(false);
 			setOpen(false);
@@ -125,7 +135,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Make name'
+											placeholder='Engine volume name'
 											{...field}
 										/>
 									</FormControl>
@@ -142,7 +152,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Make value'
+											placeholder='Engine volume value'
 											{...field}
 										/>
 									</FormControl>

@@ -9,13 +9,13 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { ApiList } from "@/components/ui/api-list";
 
-import { columns, MakeColumn } from './columns';
+import { columns, YearColumn } from './columns';
 
-interface MakesClientProps {
-	data: MakeColumn[];
+interface YearsClientProps {
+	data: YearColumn[];
 }
 
-export const MakesClient: React.FC<MakesClientProps> = ({ data }) => {
+export const YearsClient: React.FC<YearsClientProps> = ({ data }) => {
 	const params = useParams();
 	const router = useRouter();
 
@@ -23,18 +23,18 @@ export const MakesClient: React.FC<MakesClientProps> = ({ data }) => {
 		<>
 			<div className='flex items-center justify-between'>
 				<Heading
-					title={`Makes (${data.length})`}
-					description='Manage makes for your products'
+					title={`Years (${data.length})`}
+					description='Manage years for your products'
 				/>
-				<Button onClick={() => router.push(`/${params.storeId}/makes/new`)}>
+				<Button onClick={() => router.push(`/${params.storeId}/years/new`)}>
 					<Plus className='mr-2 h-4 w-4' /> Add New
 				</Button>
 			</div>
 			<Separator />
 			<DataTable searchKey='name' columns={columns} data={data} />
-			<Heading title='API' description='API Calls for Makes' />
+			<Heading title='API' description='API Calls for Years' />
 			<Separator />
-			<ApiList entityName='makes' entityIdName='makeId' />
+			<ApiList entityName='years' entityIdName='yearId' />
 		</>
 	);
 };
