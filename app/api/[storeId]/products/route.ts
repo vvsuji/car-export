@@ -130,7 +130,6 @@ export async function POST(
 				categoryId,
 				colorId,
 				makeId,
-<<<<<<< HEAD
 				conditionId,
 				driveTypeId,
 				engineVolumeId,
@@ -142,19 +141,6 @@ export async function POST(
 				steeringId,
 				transmissionId,
 				yearId,
-=======
-				// conditionId,
-				// driveTypeId,
-				// engineVolumeId,
-				// fuelTypeId,
-				// locationId,
-				// modelId,
-				// optionId,
-				// passengerId,
-				// steeringId,
-				// transmissionId,
-				// yearId,
->>>>>>> 53f550f (working! with new selections)
 				storeId: params.storeId,
 				images: {
 					createMany: {

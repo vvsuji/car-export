@@ -9,13 +9,13 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { ApiList } from "@/components/ui/api-list";
 
-import { columns, PassengerColumn } from './columns';
+import { columns, MakeColumn } from './columns';
 
-interface PassengersClientProps {
-	data: PassengerColumn[];
+interface MakesClientProps {
+	data: MakeColumn[];
 }
 
-export const PassengersClient: React.FC<PassengersClientProps> = ({ data }) => {
+export const MakesClient: React.FC<MakesClientProps> = ({ data }) => {
 	const params = useParams();
 	const router = useRouter();
 
@@ -23,18 +23,18 @@ export const PassengersClient: React.FC<PassengersClientProps> = ({ data }) => {
 		<>
 			<div className='flex items-center justify-between'>
 				<Heading
-					title={`Passengers (${data.length})`}
-					description='Manage passengers for your products'
+					title={`Makes (${data.length})`}
+					description='Manage makes for your products'
 				/>
-				<Button onClick={() => router.push(`/${params.storeId}/passengers/new`)}>
+				<Button onClick={() => router.push(`/${params.storeId}/makes/new`)}>
 					<Plus className='mr-2 h-4 w-4' /> Add New
 				</Button>
 			</div>
 			<Separator />
 			<DataTable searchKey='name' columns={columns} data={data} />
-			<Heading title='API' description='API Calls for Passengers' />
+			<Heading title='API' description='API Calls for Makes' />
 			<Separator />
-			<ApiList entityName='passengers' entityIdName='passengerId' />
+			<ApiList entityName='makes' entityIdName='makeId' />
 		</>
 	);
 };

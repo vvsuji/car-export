@@ -1,21 +1,21 @@
 import prismadb from "@/lib/prismadb";
 
-import { SteeringForm } from './components/steering-form';
+import { MakeForm } from './components/make-form';
 
-const SteeringPage = async ({ params }: { params: { steeringId: string } }) => {
-	const steering = await prismadb.steering.findUnique({
+const MakePage = async ({ params }: { params: { makeId: string } }) => {
+	const make = await prismadb.make.findUnique({
 		where: {
-			id: params.steeringId,
+			id: params.makeId,
 		},
 	});
 
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<SteeringForm initialData={steering} />
+				<MakeForm initialData={make} />
 			</div>
 		</div>
 	);
 };
 
-export default SteeringPage;
+export default MakePage;

@@ -1,25 +1,21 @@
 import prismadb from "@/lib/prismadb";
 
-import { PassengerForm } from './components/passengers-form';
+import { MakeForm } from './components/make-form';
 
-const PassengerPage = async ({
-	params,
-}: {
-	params: { passengerId: string };
-}) => {
-	const passenger = await prismadb.passenger.findUnique({
+const MakePage = async ({ params }: { params: { makeId: string } }) => {
+	const make = await prismadb.make.findUnique({
 		where: {
-			id: params.passengerId,
+			id: params.makeId,
 		},
 	});
 
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<PassengerForm initialData={passenger} />
+				<MakeForm initialData={make} />
 			</div>
 		</div>
 	);
 };
 
-export default PassengerPage;
+export default MakePage;

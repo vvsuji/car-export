@@ -2,11 +2,11 @@ import { format } from "date-fns";
 
 import prismadb from "@/lib/prismadb";
 
-import { SteeringColumn } from './components/columns';
-import { SteeringsClient } from './components/client';
+import { MakeColumn } from './components/columns';
+import { MakesClient } from './components/client';
 
-const SteeringsPage = async ({ params }: { params: { storeId: string } }) => {
-	const steerings = await prismadb.steering.findMany({
+const MakesPage = async ({ params }: { params: { storeId: string } }) => {
+	const makes = await prismadb.make.findMany({
 		where: {
 			storeId: params.storeId,
 		},
@@ -15,7 +15,7 @@ const SteeringsPage = async ({ params }: { params: { storeId: string } }) => {
 		},
 	});
 
-	const formattedSteerings: SteeringColumn[] = steerings.map((item) => ({
+	const formattedMakes: MakeColumn[] = makes.map((item) => ({
 		id: item.id,
 		name: item.name,
 		// value: item.value,
@@ -25,10 +25,10 @@ const SteeringsPage = async ({ params }: { params: { storeId: string } }) => {
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<SteeringsClient data={formattedSteerings} />
+				<MakesClient data={formattedMakes} />
 			</div>
 		</div>
 	);
 };
 
-export default SteeringsPage;
+export default MakesPage;

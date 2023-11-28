@@ -2,11 +2,11 @@ import { format } from "date-fns";
 
 import prismadb from "@/lib/prismadb";
 
-import { PassengerColumn } from './components/columns';
-import { PassengersClient } from './components/client';
+import { MakeColumn } from './components/columns';
+import { MakesClient } from './components/client';
 
-const PassengersPage = async ({ params }: { params: { storeId: string } }) => {
-	const passengers = await prismadb.passenger.findMany({
+const MakesPage = async ({ params }: { params: { storeId: string } }) => {
+	const makes = await prismadb.make.findMany({
 		where: {
 			storeId: params.storeId,
 		},
@@ -15,7 +15,7 @@ const PassengersPage = async ({ params }: { params: { storeId: string } }) => {
 		},
 	});
 
-	const formattedPassengers: PassengerColumn[] = passengers.map((item) => ({
+	const formattedMakes: MakeColumn[] = makes.map((item) => ({
 		id: item.id,
 		name: item.name,
 		// value: item.value,
@@ -25,10 +25,10 @@ const PassengersPage = async ({ params }: { params: { storeId: string } }) => {
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<PassengersClient data={formattedPassengers} />
+				<MakesClient data={formattedMakes} />
 			</div>
 		</div>
 	);
 };
 
-export default PassengersPage;
+export default MakesPage;

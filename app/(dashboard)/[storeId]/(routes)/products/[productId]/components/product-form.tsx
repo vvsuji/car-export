@@ -1,6 +1,5 @@
 'use client';
 
-<<<<<<< HEAD
 import * as z from 'zod';
 import axios from 'axios';
 import { useState } from 'react';
@@ -8,15 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { Trash } from 'lucide-react';
-=======
-import * as z from "zod"
-import axios from "axios"
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
-import { Trash } from "lucide-react"
->>>>>>> 53f550f (working! with new selections)
 import {
 	Category,
 	Color,

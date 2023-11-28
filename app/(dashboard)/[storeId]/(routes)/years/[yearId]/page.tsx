@@ -1,21 +1,21 @@
 import prismadb from "@/lib/prismadb";
 
-import { YearForm } from './components/year-form';
+import { MakeForm } from './components/make-form';
 
-const YearPage = async ({ params }: { params: { yearId: string } }) => {
-	const year = await prismadb.year.findUnique({
+const MakePage = async ({ params }: { params: { makeId: string } }) => {
+	const make = await prismadb.make.findUnique({
 		where: {
-			id: params.yearId,
+			id: params.makeId,
 		},
 	});
 
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<YearForm initialData={year} />
+				<MakeForm initialData={make} />
 			</div>
 		</div>
 	);
 };
 
-export default YearPage;
+export default MakePage;

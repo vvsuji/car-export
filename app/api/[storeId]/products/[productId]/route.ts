@@ -21,17 +21,6 @@ export async function GET(
 				category: true,
 				make: true,
 				color: true,
-				condition: true,
-				driveType: true,
-				engineVolume: true,
-				fuelType: true,
-				location: true,
-				model: true,
-				option: true,
-				passenger: true,
-				steering: true,
-				transmission: true,
-				year: true,
 			},
 		});
 
@@ -97,17 +86,6 @@ export async function PATCH(
 			images,
 			colorId,
 			makeId,
-			yearId,
-			conditionId,
-			driveTypeId,
-			engineVolumeId,
-			fuelTypeId,
-			locationId,
-			modelId,
-			optionId,
-			passengerId,
-			steeringId,
-			transmissionId,
 			isFeatured,
 			isArchived,
 		} = body;
@@ -144,50 +122,6 @@ export async function PATCH(
 			return new NextResponse('make id is required', { status: 400 });
 		}
 
-		if (!yearId) {
-			return new NextResponse('Year id is required', { status: 400 });
-		}
-
-		if (!conditionId) {
-			return new NextResponse('Condition id is required', { status: 400 });
-		}
-
-		if (!driveTypeId) {
-			return new NextResponse('Drive Type id is required', { status: 400 });
-		}
-
-		if (!engineVolumeId) {
-			return new NextResponse('Engine Volume id is required', { status: 400 });
-		}
-
-		if (!fuelTypeId) {
-			return new NextResponse('Fuel Type id is required', { status: 400 });
-		}
-
-		if (!locationId) {
-			return new NextResponse('Location id is required', { status: 400 });
-		}
-
-		if (!modelId) {
-			return new NextResponse('Model id is required', { status: 400 });
-		}
-
-		if (!optionId) {
-			return new NextResponse('Option id is required', { status: 400 });
-		}
-
-		if (!passengerId) {
-			return new NextResponse('Passenger id is required', { status: 400 });
-		}
-
-		if (!steeringId) {
-			return new NextResponse('Steering id is required', { status: 400 });
-		}
-
-		if (!transmissionId) {
-			return new NextResponse('Transmission id is required', { status: 400 });
-		}
-
 		const storeByUserId = await prismadb.store.findFirst({
 			where: {
 				id: params.storeId,
@@ -209,17 +143,6 @@ export async function PATCH(
 				categoryId,
 				colorId,
 				makeId,
-				yearId,
-				conditionId,
-				driveTypeId,
-				engineVolumeId,
-				fuelTypeId,
-				locationId,
-				modelId,
-				optionId,
-				passengerId,
-				steeringId,
-				transmissionId,
 				images: {
 					deleteMany: {},
 				},

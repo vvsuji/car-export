@@ -1,25 +1,21 @@
 import prismadb from "@/lib/prismadb";
 
-import { TransmissionForm } from './components/transmission-form';
+import { MakeForm } from './components/make-form';
 
-const TransmissionPage = async ({
-	params,
-}: {
-	params: { transmissionId: string };
-}) => {
-	const transmission = await prismadb.transmission.findUnique({
+const MakePage = async ({ params }: { params: { makeId: string } }) => {
+	const make = await prismadb.make.findUnique({
 		where: {
-			id: params.transmissionId,
+			id: params.makeId,
 		},
 	});
 
 	return (
 		<div className='flex-col'>
 			<div className='flex-1 space-y-4 p-8 pt-6'>
-				<TransmissionForm initialData={transmission} />
+				<MakeForm initialData={make} />
 			</div>
 		</div>
 	);
 };
 
-export default TransmissionPage;
+export default MakePage;

@@ -1,78 +1,72 @@
-'use client';
+"use client"
 
-import * as z from 'zod';
-import axios from 'axios';
-import { useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-import { Trash } from 'lucide-react';
-import { Transmission } from '@prisma/client';
-import { useParams, useRouter } from 'next/navigation';
+import * as z from "zod"
+import axios from "axios"
+import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
+import { Trash } from "lucide-react"
+import { Make } from '@prisma/client';
+import { useParams, useRouter } from "next/navigation"
 
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '@/components/ui/form';
-import { Separator } from '@/components/ui/separator';
-import { Heading } from '@/components/ui/heading';
-import { AlertModal } from '@/components/modals/alert-modal';
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Separator } from "@/components/ui/separator"
+import { Heading } from "@/components/ui/heading"
+import { AlertModal } from "@/components/modals/alert-modal"
 
 const formSchema = z.object({
-	name: z.string().min(1),
-	// value: z.string().min(1),
+  name: z.string().min(1),
+  // value: z.string().min(1),
 });
 
-type TransmissionFormValues = z.infer<typeof formSchema>;
+type MakeFormValues = z.infer<typeof formSchema>;
 
-interface TransmissionFormProps {
-	initialData: Transmission | null;
-}
+interface MakeFormProps {
+	initialData: Make | null;
+};
 
-export const TransmissionForm: React.FC<TransmissionFormProps> = ({
-	initialData,
-}) => {
+export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 	const params = useParams();
 	const router = useRouter();
 
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const title = initialData ? 'Edit transmission' : 'Create transmission';
-	const description = initialData
-		? 'Edit a transmission.'
-		: 'Add a new transmission';
-	const toastMessage = initialData
-		? 'Transmission updated.'
-		: 'Transmission created.';
+	const title = initialData ? 'Edit make' : 'Create make';
+	const description = initialData ? 'Edit a make.' : 'Add a new make';
+	const toastMessage = initialData ? 'Make updated.' : 'Make created.';
 	const action = initialData ? 'Save changes' : 'Create';
 
-	const form = useForm<TransmissionFormValues>({
+	const form = useForm<MakeFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: initialData || {
 			name: '',
 		},
 	});
 
-	const onSubmit = async (data: TransmissionFormValues) => {
+	const onSubmit = async (data: MakeFormValues) => {
 		try {
 			setLoading(true);
 			if (initialData) {
 				await axios.patch(
-					`/api/${params.storeId}/transmissions/${params.transmissionId}`,
+					`/api/${params.storeId}/makes/${params.makeId}`,
 					data,
 				);
 			} else {
-				await axios.post(`/api/${params.storeId}/transmissions`, data);
+				await axios.post(`/api/${params.storeId}/makes`, data);
 			}
 			router.refresh();
-			router.push(`/${params.storeId}/transmissions`);
+			router.push(`/${params.storeId}/makes`);
 			toast.success(toastMessage);
 		} catch (error: any) {
 			toast.error('Something went wrong.');
@@ -84,16 +78,12 @@ export const TransmissionForm: React.FC<TransmissionFormProps> = ({
 	const onDelete = async () => {
 		try {
 			setLoading(true);
-			await axios.delete(
-				`/api/${params.storeId}/transmissions/${params.transmissionId}`,
-			);
+			await axios.delete(`/api/${params.storeId}/makes/${params.makeId}`);
 			router.refresh();
-			router.push(`/${params.storeId}/transmissions`);
-			toast.success('Transmission deleted.');
+			router.push(`/${params.storeId}/makes`);
+			toast.success('Make deleted.');
 		} catch (error: any) {
-			toast.error(
-				'Make sure you removed all products using this transmission first.',
-			);
+			toast.error('Make sure you removed all products using this make first.');
 		} finally {
 			setLoading(false);
 			setOpen(false);
@@ -135,7 +125,7 @@ export const TransmissionForm: React.FC<TransmissionFormProps> = ({
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Transmission name'
+											placeholder='Make name'
 											{...field}
 										/>
 									</FormControl>
@@ -152,7 +142,7 @@ export const TransmissionForm: React.FC<TransmissionFormProps> = ({
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Transmission value'
+											placeholder='Make value'
 											{...field}
 										/>
 									</FormControl>

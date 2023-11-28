@@ -16,18 +16,7 @@ model Store {
   categories      Category[] @relation("StoreToCategory")
   products        Product[]  @relation("StoreToProduct")
   makes           Make[]     @relation("StoreToMake")
-  models           Model[]     @relation("StoreToModel")
-  years           Year[]     @relation("StoreToYear")
-  fuelTypes           FuelType[]     @relation("StoreToFuelType")
-  transmissions           Transmission[]     @relation("StoreToTransmission")
-  driveTypes           DriveType[]     @relation("StoreToDriveType")
-  conditions           Condition[]     @relation("StoreToCondition")
-  passengers           Passenger[]     @relation("StoreToPassenger")
-  engineVolumes           EngineVolume[]     @relation("StoreToEngineVolume")
-  options           Option[]     @relation("StoreToOption")
   colors          Color[]     @relation("StoreToColor")
-  steerings           Steering[]     @relation("StoreToSteering")
-  locations           Location[]     @relation("StoreToLocation")
   orders          Order[]     @relation("StoreToOrder")
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
@@ -73,30 +62,8 @@ model Product {
   isArchived  Boolean   @default(false)
   makeId      String    // Foreign Key to Make
   make        Make      @relation(fields: [makeId], references: [id])
-  modelId      String    // Foreign Key to Model
-  model        Model      @relation(fields: [modelId], references: [id])
-  yearId      String    // Foreign Key to Year
-  year        Year      @relation(fields: [yearId], references: [id])
-  fuelTypeId      String    // Foreign Key to FuelType
-  fuelType        FuelType      @relation(fields: [fuelTypeId], references: [id])
-  transmissionId      String    // Foreign Key to Transmission
-  transmission        Transmission      @relation(fields: [transmissionId], references: [id])
-  driveTypeId      String    // Foreign Key to DriveType
-  driveType        DriveType      @relation(fields: [driveTypeId], references: [id])
-  conditionId      String    // Foreign Key to Condition
-  condition        Condition     @relation(fields: [conditionId], references: [id])
-  passengerId      String    // Foreign Key to Passenger
-  passenger        Passenger      @relation(fields: [passengerId], references: [id])
-  engineVolumeId      String    // Foreign Key to EngineVolume
-  engineVolume        EngineVolume      @relation(fields: [engineVolumeId], references: [id])
-  optionId      String    // Foreign Key to Option
-  option        Option      @relation(fields: [optionId], references: [id])
   colorId     String    // Foreign Key to Color
   color       Color     @relation(fields: [colorId], references: [id])
-  steeringId      String    // Foreign Key to Steering
-  steering        Steering      @relation(fields: [steeringId], references: [id])
-  locationId      String    // Foreign Key to Location
-  location        Location      @relation(fields: [locationId], references: [id])
   images      Image[]   // Relation to Image model
   orderItems  OrderItem[]   // Relation to Order model
   createdAt   DateTime  @default(now())
@@ -146,144 +113,12 @@ model Make {
   @@index([storeId])
 }
 
-model Model {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToModel", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model Year {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToYear", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model FuelType {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToFuelType", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model Transmission {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToTransmission", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model DriveType {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToDriveType", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model Condition {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToCondition", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model Passenger {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToPassenger", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model EngineVolume {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToEngineVolume", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model Option {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToOption", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
 model Color {
   id          String   @id @default(uuid())
   storeId     String   // Foreign Key to Store
   store       Store    @relation("StoreToColor", fields: [storeId], references: [id])
   name        String
   value       String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model Steering {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToSteering", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model Location {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToLocation", fields: [storeId], references: [id])
-  name        String
   products    Product[] // Relation to Product model
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
