@@ -32,5 +32,5 @@ const Navbar = async () => {
     </div>
   );
 };
- 
+
 export default Navbar;
