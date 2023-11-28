@@ -18,7 +18,7 @@ export function MainNav({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLElement>) {
-  const pathname = usePathname();
+	const pathname = usePathname();
 	const params = useParams();
 	const [isMounted, setIsMounted] = useState(false);
 
@@ -145,26 +145,44 @@ export function MainNav({
 	});
 
 	useEffect(() => {
-		setIsMounted(true); // Set isMounted to true when component is mounted on client side
+		setIsMounted(true);
 	}, []);
 
-  return (
+	return (
 		<nav
 			className={cn('flex items-center space-x-4 lg:space-x-6', className)}
 			{...props}>
-			{allRoutes.map((route) => (
-				<Link
-					key={route.href}
-					href={route.href}
-					className={cn(
-						'text-sm font-medium transition-colors hover:text-primary',
-						route.active
-							? 'text-black dark:text-white'
-							: 'text-muted-foreground',
-					)}>
-					{route.label}
-				</Link>
-			))}
+			{isMounted &&
+				nonDropdownRoutes.map((route) => (
+					<Link
+						key={route.href}
+						href={route.href}
+						passHref
+						className={cn(
+							'text-sm font-medium transition-colors hover:text-primary',
+							route.active
+								? 'text-black dark:text-white'
+								: 'text-muted-foreground',
+						)}>
+						<div>{route.label}</div>
+					</Link>
+				))}
+			{isMounted && dropdownRoutes.length > 0 && (
+				<div className='relative'>
+					<DropdownMenu>
+						<DropdownMenuTrigger>
+							<button>More</button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent>
+							{dropdownRoutes.map((route) => (
+								<DropdownMenuItem key={route.href}>
+									<Link href={route.href}>{route.label}</Link>
+								</DropdownMenuItem>
+							))}
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</div>
+			)}
 		</nav>
 	);
-};
+}
