@@ -78,11 +78,6 @@ const ProductPage = async ({
 			storeId: params.storeId,
 		},
 	});
-	const years = await prismadb.year.findMany({
-		where: {
-			storeId: params.storeId,
-		},
-	});
 
 	return (
 		<div className='flex-col'>
@@ -100,7 +95,6 @@ const ProductPage = async ({
 					passengers={passengers}
 					steerings={steerings}
 					transmissions={transmissions}
-					years={years}
 					initialData={product}
 				/>
 			</div>

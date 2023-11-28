@@ -27,7 +27,7 @@ export async function POST(
 			passengerId,
 			steeringId,
 			transmissionId,
-			yearId,
+			year,
 			images,
 			isFeatured,
 			isArchived,
@@ -61,8 +61,8 @@ export async function POST(
 			return new NextResponse('Make id is required', { status: 400 });
 		}
 
-		if (!yearId) {
-			return new NextResponse('Year id is required', { status: 400 });
+		if (!year) {
+			return new NextResponse('Year is required', { status: 400 });
 		}
 
 		if (!conditionId) {
@@ -134,7 +134,7 @@ export async function POST(
 				passengerId,
 				steeringId,
 				transmissionId,
-				yearId,
+				year,
 				storeId: params.storeId,
 				images: {
 					createMany: {
@@ -160,7 +160,6 @@ export async function GET(
 		const categoryId = searchParams.get('categoryId') || undefined;
 		const colorId = searchParams.get('colorId') || undefined;
 		const makeId = searchParams.get('makeId') || undefined;
-		const yearId = searchParams.get('yearId') || undefined;
 		const conditionId = searchParams.get('conditionId') || undefined;
 		const driveTypeId = searchParams.get('driveTypeId') || undefined;
 		const fuelTypeId = searchParams.get('fuelTypeId') || undefined;
@@ -182,7 +181,6 @@ export async function GET(
 				categoryId,
 				colorId,
 				makeId,
-				yearId,
 				conditionId,
 				driveTypeId,
 				fuelTypeId,

@@ -22,7 +22,6 @@ import {
 	Product,
 	Steering,
 	Transmission,
-	Year,
 } from '@prisma/client';
 import { useParams, useRouter } from 'next/navigation';
 
@@ -51,7 +50,6 @@ import ImageUpload from '@/components/ui/image-upload';
 import { Checkbox } from '@/components/ui/checkbox';
 
 const formSchema = z.object({
-	name: z.string().min(1),
 	images: z.object({ url: z.string() }).array(),
 	price: z.coerce.number().min(1),
 	categoryId: z.string().min(1),
@@ -66,7 +64,7 @@ const formSchema = z.object({
 	passengerId: z.string().min(1),
 	steeringId: z.string().min(1),
 	transmissionId: z.string().min(1),
-	yearId: z.string().min(1),
+	year: z.coerce.number().min(1),
 	isFeatured: z.boolean().default(false).optional(),
 	isArchived: z.boolean().default(false).optional(),
 });
@@ -91,7 +89,6 @@ interface ProductFormProps {
 	passengers: Passenger[];
 	steerings: Steering[];
 	transmissions: Transmission[];
-	years: Year[];
 }
 
 export const ProductForm: React.FC<ProductFormProps> = ({
@@ -108,7 +105,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 	passengers,
 	steerings,
 	transmissions,
-	years,
 }) => {
 	const params = useParams();
 	const router = useRouter();
@@ -127,7 +123,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 				price: parseFloat(String(initialData?.price)),
 		  }
 		: {
-				name: '',
 				images: [],
 				price: 0,
 				category: '',
@@ -142,7 +137,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 				passenger: '',
 				steering: '',
 				transmission: '',
-				year: '',
+				year: 0,
 				isFeatured: false,
 				isArchived: false,
 		  };
@@ -238,7 +233,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 						)}
 					/>
 					<div className='md:grid md:grid-cols-3 gap-8'>
-						<FormField
+						{/* <FormField
 							control={form.control}
 							name='name'
 							render={({ field }) => (
@@ -254,21 +249,65 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 									<FormMessage />
 								</FormItem>
 							)}
+						/> */}
+						<FormField
+							control={form.control}
+							name='makeId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Make</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a make'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{makes.map((make) => (
+												<SelectItem key={make.id} value={make.id}>
+													{make.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
 						/>
 						<FormField
 							control={form.control}
-							name='price'
+							name='modelId'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Price</FormLabel>
-									<FormControl>
-										<Input
-											type='number'
-											disabled={loading}
-											placeholder='9.99'
-											{...field}
-										/>
-									</FormControl>
+									<FormLabel>Model</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a model'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{models?.map((model) => (
+												<SelectItem key={model.id} value={model.id}>
+													{model.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -296,37 +335,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 											{categories.map((category) => (
 												<SelectItem key={category.id} value={category.id}>
 													{category.name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='makeId'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Make</FormLabel>
-									<Select
-										disabled={loading}
-										onValueChange={field.onChange}
-										value={field.value}
-										defaultValue={field.value}>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue
-													defaultValue={field.value}
-													placeholder='Select a make'
-												/>
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{makes.map((make) => (
-												<SelectItem key={make.id} value={make.id}>
-													{make.name}
 												</SelectItem>
 											))}
 										</SelectContent>
@@ -412,7 +420,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 											<SelectTrigger>
 												<SelectValue
 													defaultValue={field.value}
-													placeholder='Select a Fuel Type'
+													placeholder='Select a fuel type'
 												/>
 											</SelectTrigger>
 										</FormControl>
@@ -461,37 +469,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 						/>
 						<FormField
 							control={form.control}
-							name='modelId'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>model</FormLabel>
-									<Select
-										disabled={loading}
-										onValueChange={field.onChange}
-										value={field.value}
-										defaultValue={field.value}>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue
-													defaultValue={field.value}
-													placeholder='Select a model'
-												/>
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{models?.map((model) => (
-												<SelectItem key={model.id} value={model.id}>
-													{model.name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
 							name='optionId'
 							render={({ field }) => (
 								<FormItem>
@@ -505,7 +482,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 											<SelectTrigger>
 												<SelectValue
 													defaultValue={field.value}
-													placeholder='Select an option'
+													placeholder='Select option(s)'
 												/>
 											</SelectTrigger>
 										</FormControl>
@@ -567,7 +544,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 											<SelectTrigger>
 												<SelectValue
 													defaultValue={field.value}
-													placeholder='Select a steering'
+													placeholder='Select steering'
 												/>
 											</SelectTrigger>
 										</FormControl>
@@ -598,7 +575,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 											<SelectTrigger>
 												<SelectValue
 													defaultValue={field.value}
-													placeholder='Select a transmission'
+													placeholder='Select transmission'
 												/>
 											</SelectTrigger>
 										</FormControl>
@@ -618,31 +595,18 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 						/>
 						<FormField
 							control={form.control}
-							name='yearId'
+							name='year'
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Year</FormLabel>
-									<Select
-										disabled={loading}
-										onValueChange={field.onChange}
-										value={field.value}
-										defaultValue={field.value}>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue
-													defaultValue={field.value}
-													placeholder='Select a year'
-												/>
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{years?.map((year) => (
-												<SelectItem key={year.id} value={year.id}>
-													{year.name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
+									<FormControl>
+										<Input
+											type='number'
+											disabled={loading}
+											placeholder='2023'
+											{...field}
+										/>
+									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
@@ -674,6 +638,24 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 											))}
 										</SelectContent>
 									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='price'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Price</FormLabel>
+									<FormControl>
+										<Input
+											type='number'
+											disabled={loading}
+											placeholder='9.99'
+											{...field}
+										/>
+									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}

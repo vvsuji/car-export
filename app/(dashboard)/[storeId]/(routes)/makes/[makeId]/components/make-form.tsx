@@ -23,16 +23,22 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
 import { AlertModal } from "@/components/modals/alert-modal"
+import ImageUpload from '@/components/ui/image-upload';
 
 const formSchema = z.object({
 	name: z.string().min(1),
+	images: z.object({ url: z.string() }).array(),
 });
 
 type MakeFormValues = z.infer<typeof formSchema>;
 
 interface MakeFormProps {
-	initialData: Make | null;
-};
+	initialData:
+		| (Make & {
+				images: Image[];
+		  })
+		| null;
+}
 
 export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 	const params = useParams();
@@ -50,6 +56,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 		resolver: zodResolver(formSchema),
 		defaultValues: initialData || {
 			name: '',
+			images: [],
 		},
 	});
 
@@ -114,6 +121,30 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
 					className='space-y-8 w-full'>
+					<FormField
+						control={form.control}
+						name='images'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Images</FormLabel>
+								<FormControl>
+									<ImageUpload
+										value={field.value.map((image) => image.url)}
+										disabled={loading}
+										onChange={(url) =>
+											field.onChange([...field.value, { url }])
+										}
+										onRemove={(url) =>
+											field.onChange([
+												...field.value.filter((current) => current.url !== url),
+											])
+										}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 					<div className='md:grid md:grid-cols-3 gap-8'>
 						<FormField
 							control={form.control}
@@ -124,7 +155,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Make name'
+											placeholder='Product name'
 											{...field}
 										/>
 									</FormControl>
@@ -132,23 +163,6 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 								</FormItem>
 							)}
 						/>
-						{/* <FormField
-							control={form.control}
-							name='value'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Value</FormLabel>
-									<FormControl>
-										<Input
-											disabled={loading}
-											placeholder='Make value'
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/> */}
 					</div>
 					<Button disabled={loading} className='ml-auto' type='submit'>
 						{action}

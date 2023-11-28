@@ -17,7 +17,6 @@ model Store {
   products        Product[]  @relation("StoreToProduct")
   makes           Make[]     @relation("StoreToMake")
   models           Model[]     @relation("StoreToModel")
-  years           Year[]     @relation("StoreToYear")
   fuelTypes           FuelType[]     @relation("StoreToFuelType")
   transmissions           Transmission[]     @relation("StoreToTransmission")
   driveTypes           DriveType[]     @relation("StoreToDriveType")
@@ -74,8 +73,7 @@ model Product {
   make        Make      @relation(fields: [makeId], references: [id])
   modelId      String    // Foreign Key to Model
   model        Model      @relation(fields: [modelId], references: [id])
-  yearId      String    // Foreign Key to Year
-  year        Year      @relation(fields: [yearId], references: [id])
+  year     Int
   fuelTypeId      String    // Foreign Key to FuelType
   fuelType        FuelType      @relation(fields: [fuelTypeId], references: [id])
   transmissionId      String    // Foreign Key to Transmission
@@ -147,18 +145,6 @@ model Model {
   id          String    @id @default(uuid())
   storeId     String    // Foreign Key to Store
   store       Store     @relation("StoreToModel", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model Year {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToYear", fields: [storeId], references: [id])
   name        String
   products    Product[] // Relation to Product model
   createdAt   DateTime  @default(now())

@@ -30,7 +30,6 @@ export async function GET(
 				passenger: true,
 				steering: true,
 				transmission: true,
-				year: true,
 			},
 		});
 
@@ -96,7 +95,7 @@ export async function PATCH(
 			images,
 			colorId,
 			makeId,
-			yearId,
+			year,
 			conditionId,
 			driveTypeId,
 			fuelTypeId,
@@ -142,7 +141,7 @@ export async function PATCH(
 			return new NextResponse('make id is required', { status: 400 });
 		}
 
-		if (!yearId) {
+		if (!year) {
 			return new NextResponse('Year id is required', { status: 400 });
 		}
 
@@ -203,7 +202,7 @@ export async function PATCH(
 				categoryId,
 				colorId,
 				makeId,
-				yearId,
+				year,
 				conditionId,
 				driveTypeId,
 				fuelTypeId,
