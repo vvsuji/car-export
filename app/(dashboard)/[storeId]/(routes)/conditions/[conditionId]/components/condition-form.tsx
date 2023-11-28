@@ -90,7 +90,7 @@ export const ConditionForm: React.FC<ConditionFormProps> = ({
 			toast.success('Condition deleted.');
 		} catch (error: any) {
 			toast.error(
-				'Condition sure you removed all products using this condition first.',
+				'Make sure you removed all products using this condition first.',
 			);
 		} finally {
 			setLoading(false);

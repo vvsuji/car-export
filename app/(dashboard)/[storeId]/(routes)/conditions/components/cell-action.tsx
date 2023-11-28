@@ -36,7 +36,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 			router.refresh();
 		} catch (error) {
 			toast.error(
-				'Condition sure you removed all products using this condition first.',
+				'Make sure you removed all products using this condition first.',
 			);
 		} finally {
 			setOpen(false);
