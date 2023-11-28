@@ -26,7 +26,6 @@ import { AlertModal } from '@/components/modals/alert-modal';
 
 const formSchema = z.object({
 	name: z.string().min(1),
-	// value: z.string().min(1),
 });
 
 type EngineVolumeFormValues = z.infer<typeof formSchema>;
@@ -92,7 +91,7 @@ export const EngineVolumeForm: React.FC<EngineVolumeFormProps> = ({
 			toast.success('Engine volume deleted.');
 		} catch (error: any) {
 			toast.error(
-				'Engine volume sure you removed all products using this engine volume first.',
+				'Make sure you removed all products using this engine volume first.',
 			);
 		} finally {
 			setLoading(false);
@@ -143,23 +142,6 @@ export const EngineVolumeForm: React.FC<EngineVolumeFormProps> = ({
 								</FormItem>
 							)}
 						/>
-						{/* <FormField
-							control={form.control}
-							name='value'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Value</FormLabel>
-									<FormControl>
-										<Input
-											disabled={loading}
-											placeholder='Engine volume value'
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/> */}
 					</div>
 					<Button disabled={loading} className='ml-auto' type='submit'>
 						{action}

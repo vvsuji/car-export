@@ -36,7 +36,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 			router.refresh();
 		} catch (error) {
 			toast.error(
-				'Drive type sure you removed all products using this drive type first.',
+				'Make sure you removed all products using this drive type first.',
 			);
 		} finally {
 			setOpen(false);

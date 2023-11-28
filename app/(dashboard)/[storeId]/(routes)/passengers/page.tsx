@@ -18,7 +18,6 @@ const PassengersPage = async ({ params }: { params: { storeId: string } }) => {
 	const formattedPassengers: PassengerColumn[] = passengers.map((item) => ({
 		id: item.id,
 		name: item.name,
-		// value: item.value,
 		createdAt: format(item.createdAt, 'MMMM do, yyyy'),
 	}));
 

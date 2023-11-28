@@ -37,7 +37,9 @@ export const CellAction: React.FC<CellActionProps> = ({
 			toast.success('Fuel type deleted.');
 			router.refresh();
 		} catch (error) {
-			toast.error('Fuel type sure you removed all products using this fuel type first.');
+			toast.error(
+				'Make sure you removed all products using this fuel type first.',
+			);
 		} finally {
 			setOpen(false);
 			setLoading(false);

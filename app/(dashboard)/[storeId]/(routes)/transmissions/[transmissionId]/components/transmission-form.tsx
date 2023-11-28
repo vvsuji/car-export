@@ -26,7 +26,6 @@ import { AlertModal } from '@/components/modals/alert-modal';
 
 const formSchema = z.object({
 	name: z.string().min(1),
-	// value: z.string().min(1),
 });
 
 type TransmissionFormValues = z.infer<typeof formSchema>;

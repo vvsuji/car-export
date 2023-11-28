@@ -16,10 +16,7 @@ export const columns: ColumnDef<EngineVolumeColumn>[] = [
 		accessorKey: 'name',
 		header: 'Name',
 	},
-	// {
-	// 	accessorKey: 'value',
-	// 	header: 'Value',
-	// },
+
 	{
 		accessorKey: 'createdAt',
 		header: 'Date',

@@ -18,7 +18,6 @@ const MakesPage = async ({ params }: { params: { storeId: string } }) => {
 	const formattedMakes: MakeColumn[] = makes.map((item) => ({
 		id: item.id,
 		name: item.name,
-		// value: item.value,
 		createdAt: format(item.createdAt, 'MMMM do, yyyy'),
 	}));
 

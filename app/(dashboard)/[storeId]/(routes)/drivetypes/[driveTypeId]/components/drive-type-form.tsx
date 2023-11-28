@@ -92,7 +92,7 @@ export const DriveTypeForm: React.FC<DriveTypeFormProps> = ({
 			toast.success('Drive type deleted.');
 		} catch (error: any) {
 			toast.error(
-				'Drive type sure you removed all products using this drive type first.',
+				'Make sure you removed all products using this drive type first.',
 			);
 		} finally {
 			setLoading(false);
@@ -143,23 +143,6 @@ export const DriveTypeForm: React.FC<DriveTypeFormProps> = ({
 								</FormItem>
 							)}
 						/>
-						{/* <FormField
-							control={form.control}
-							name='value'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Value</FormLabel>
-									<FormControl>
-										<Input
-											disabled={loading}
-											placeholder='Drive type value'
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/> */}
 					</div>
 					<Button disabled={loading} className='ml-auto' type='submit'>
 						{action}

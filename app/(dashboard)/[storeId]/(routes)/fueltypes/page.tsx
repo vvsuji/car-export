@@ -18,7 +18,6 @@ const FuelTypesPage = async ({ params }: { params: { storeId: string } }) => {
 	const formattedFuelTypes: FuelTypeColumn[] = fuelTypes.map((item) => ({
 		id: item.id,
 		name: item.name,
-		// value: item.value,
 		createdAt: format(item.createdAt, 'MMMM do, yyyy'),
 	}));
 
