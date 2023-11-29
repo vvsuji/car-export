@@ -27,17 +27,13 @@ import ImageUpload from '@/components/ui/image-upload';
 
 const formSchema = z.object({
 	name: z.string().min(1),
-	images: z.object({ url: z.string() }).array(),
+	imageUrl: z.string().min(1),
 });
 
 type MakeFormValues = z.infer<typeof formSchema>;
 
 interface MakeFormProps {
-	initialData:
-		| (Make & {
-				images: Image[];
-		  })
-		| null;
+	initialData: Make | null;
 }
 
 export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
@@ -56,7 +52,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 		resolver: zodResolver(formSchema),
 		defaultValues: initialData || {
 			name: '',
-			images: [],
+			imageUrl: '',
 		},
 	});
 
@@ -89,7 +85,9 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 			router.push(`/${params.storeId}/makes`);
 			toast.success('Make deleted.');
 		} catch (error: any) {
-			toast.error('Make sure you removed all products using this make first.');
+			toast.error(
+				'Make sure you removed all categories using this make first.',
+			);
 		} finally {
 			setLoading(false);
 			setOpen(false);
@@ -123,22 +121,16 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 					className='space-y-8 w-full'>
 					<FormField
 						control={form.control}
-						name='images'
+						name='imageUrl'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Images</FormLabel>
+								<FormLabel>Background image</FormLabel>
 								<FormControl>
 									<ImageUpload
-										value={field.value.map((image) => image.url)}
+										value={field.value ? [field.value] : []}
 										disabled={loading}
-										onChange={(url) =>
-											field.onChange([...field.value, { url }])
-										}
-										onRemove={(url) =>
-											field.onChange([
-												...field.value.filter((current) => current.url !== url),
-											])
-										}
+										onChange={(url) => field.onChange(url)}
+										onRemove={() => field.onChange('')}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -155,7 +147,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 									<FormControl>
 										<Input
 											disabled={loading}
-											placeholder='Product name'
+											placeholder='Make name'
 											{...field}
 										/>
 									</FormControl>

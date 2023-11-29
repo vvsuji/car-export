@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { auth } from '@clerk/nextjs';
 
-import prismadb from "@/lib/prismadb";
-import { auth } from "@clerk/nextjs";
+import prismadb from '@/lib/prismadb';
 
 export async function GET(
 	req: Request,
@@ -20,7 +20,7 @@ export async function GET(
 
 		return NextResponse.json(make);
 	} catch (error) {
-		console.log('[_GET]', error);
+		console.log('[MAKE_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -62,8 +62,7 @@ export async function DELETE(
 		console.log('[MAKE_DELETE]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
-};
-
+}
 
 export async function PATCH(
 	req: Request,
@@ -74,7 +73,7 @@ export async function PATCH(
 
 		const body = await req.json();
 
-		const { name } = body;
+		const { name, imageUrl } = body;
 
 		if (!userId) {
 			return new NextResponse('Unauthenticated', { status: 403 });
@@ -82,6 +81,10 @@ export async function PATCH(
 
 		if (!name) {
 			return new NextResponse('Name is required', { status: 400 });
+		}
+
+		if (!imageUrl) {
+			return new NextResponse('Image URL is required', { status: 400 });
 		}
 
 		if (!params.makeId) {
@@ -105,12 +108,13 @@ export async function PATCH(
 			},
 			data: {
 				name,
+				imageUrl,
 			},
 		});
 
 		return NextResponse.json(make);
 	} catch (error) {
-		console.log('[MAKES_PATCH]', error);
+		console.log('[MAKE_PATCH]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 };

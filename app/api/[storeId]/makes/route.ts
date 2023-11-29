@@ -12,7 +12,7 @@ export async function POST(
 
 		const body = await req.json();
 
-		const { name } = body;
+		const { name, imageUrl } = body;
 
 		if (!userId) {
 			return new NextResponse('Unauthenticated', { status: 403 });
@@ -22,9 +22,9 @@ export async function POST(
 			return new NextResponse('Name is required', { status: 400 });
 		}
 
-		// if (!value) {
-		// 	return new NextResponse('Value is required', { status: 400 });
-		// }
+		if (!imageUrl) {
+			return new NextResponse('Image URL is required', { status: 400 });
+		}
 
 		if (!params.storeId) {
 			return new NextResponse('Store id is required', { status: 400 });
@@ -44,6 +44,7 @@ export async function POST(
 		const make = await prismadb.make.create({
 			data: {
 				name,
+				imageUrl,
 				storeId: params.storeId,
 			},
 		});
