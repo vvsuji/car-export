@@ -100,7 +100,16 @@ model Product {
   @@index([storeId])
   @@index([categoryId])
   @@index([makeId])
+  @@index([modelId])
+  @@index([fuelTypeId])
+  @@index([transmissionId])
+  @@index([driveTypeId])
+  @@index([conditionId])
+  @@index([passengerId])
   @@index([colorId])
+  @@index([steeringId])
+  @@index([locationId])
+  @@index([optionId])
 }
 
 model Order {

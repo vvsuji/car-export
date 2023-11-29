@@ -120,7 +120,12 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 	const defaultValues = initialData
 		? {
 				...initialData,
-				price: parseFloat(String(initialData?.price)),
+				price:
+					initialData?.price !== null
+						? parseFloat(String(initialData.price))
+						: 0,
+				year:
+					initialData?.year !== null ? parseFloat(String(initialData.year)) : 0,
 		  }
 		: {
 				images: [],
@@ -593,24 +598,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 								</FormItem>
 							)}
 						/>
-						<FormField
-							control={form.control}
-							name='year'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Year</FormLabel>
-									<FormControl>
-										<Input
-											type='number'
-											disabled={loading}
-											placeholder='2023'
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+
 						<FormField
 							control={form.control}
 							name='colorId'
@@ -638,6 +626,24 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 											))}
 										</SelectContent>
 									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='year'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Year</FormLabel>
+									<FormControl>
+										<Input
+											type='number'
+											disabled={loading}
+											placeholder='2023'
+											{...field}
+										/>
+									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
