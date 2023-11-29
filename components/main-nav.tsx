@@ -108,11 +108,6 @@ export function MainNav({
 			label: 'Transmission',
 			active: pathname === `/${params.storeId}/transmissions`,
 		},
-		{
-			href: `/${params.storeId}/years`,
-			label: 'Year',
-			active: pathname === `/${params.storeId}/years`,
-		},
 	];
 
 	const dropdownRoutes = allRoutes.filter((route) => {
@@ -127,8 +122,7 @@ export function MainNav({
 			route.href.includes(`/${params.storeId}/options`) ||
 			route.href.includes(`/${params.storeId}/passengers`) ||
 			route.href.includes(`/${params.storeId}/steerings`) ||
-			route.href.includes(`/${params.storeId}/transmissions`) ||
-			route.href.includes(`/${params.storeId}/years`)
+			route.href.includes(`/${params.storeId}/transmissions`)
 		);
 	});
 
