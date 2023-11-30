@@ -4,7 +4,7 @@ import * as z from "zod"
 import axios from "axios"
 import { useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { Trash } from 'lucide-react';
 import {
@@ -177,14 +177,20 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
 	const selectedMake = form.getValues('makeId') as SelectedMake;
 
-	const useFormReset = (form, watchField, resetField) => {
+	type FormResetProps = {
+		form: UseFormReturn<ProductFormValues>; // Assuming ProductFormValues is the type for your form data
+		watchField: keyof ProductFormValues; // Assuming ProductFormValues has fields like 'makeId', 'modelId', etc.
+		resetField: keyof ProductFormValues; // Adjust the type according to your form fields
+	};
+
+	const useFormReset = ({ form, watchField, resetField }: FormResetProps) => {
 		useEffect(() => {
 			const watchFieldValue = form.watch(watchField);
 			form.setValue(resetField, ''); // Reset the field when watchField changes
 		}, [form, watchField, resetField]);
 	};
 
-	useFormReset(form, 'makeId', 'modelId');
+	useFormReset({ form, watchField: 'makeId', resetField: 'modelId' });
 
 	const onSubmit = async (data: ProductFormValues) => {
 		try {
