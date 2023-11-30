@@ -170,27 +170,40 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 	// Define the type for selectedMake
 	type SelectedMake = keyof CarModels;
 
-	const form = useForm<ProductFormValues>({
-		resolver: zodResolver(formSchema),
-		defaultValues,
+  const form = useForm<ProductFormValues>({
+		resolver: zodResolver(formSchema), // Make sure formSchema is defined
+		defaultValues, // Make sure defaultValues is defined
 	});
 
-	const selectedMake = form.getValues('makeId') as SelectedMake;
-
 	type FormResetProps = {
-		form: UseFormReturn<ProductFormValues>; // Assuming ProductFormValues is the type for your form data
-		watchField: keyof ProductFormValues; // Assuming ProductFormValues has fields like 'makeId', 'modelId', etc.
-		resetField: keyof ProductFormValues; // Adjust the type according to your form fields
+		form: UseFormReturn<ProductFormValues>;
+		watchField: keyof ProductFormValues;
+		resetFields: Array<keyof ProductFormValues>;
 	};
 
-	const useFormReset = ({ form, watchField, resetField }: FormResetProps) => {
+	const useFormReset = ({ form, watchField, resetFields }: FormResetProps) => {
 		useEffect(() => {
 			const watchFieldValue = form.watch(watchField);
-			form.setValue(resetField, ''); // Reset the field when watchField changes
-		}, [form, watchField, resetField]);
+
+			// Check if the current field change is among the fields to reset
+			if (resetFields.includes(watchField)) {
+				resetFields.forEach((field) => {
+					if (field !== watchField) {
+						form.setValue(field, ''); // Reset the specified fields except for the watched field
+					}
+				});
+			}
+		}, [form, watchField, resetFields]);
 	};
 
-	useFormReset({ form, watchField: 'makeId', resetField: 'modelId' });
+	// Usage examples
+	useFormReset({ form, watchField: 'makeId', resetFields: ['modelId'] });
+	useFormReset({
+		form,
+		watchField: 'categoryId',
+		resetFields: ['makeId', 'modelId'],
+	});
+
 
 	const onSubmit = async (data: ProductFormValues) => {
 		try {
