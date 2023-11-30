@@ -2,11 +2,11 @@
 
 import * as z from "zod"
 import axios from "axios"
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
-import { Trash } from "lucide-react"
+import { useState, useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { Trash } from 'lucide-react';
 import {
 	Category,
 	Color,
@@ -49,6 +49,7 @@ import {
 import ImageUpload from '@/components/ui/image-upload';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Container } from 'postcss';
+import { carModels } from './car-models.js';
 
 const formSchema = z.object({
 	images: z.object({ url: z.string() }).array(),
@@ -148,10 +149,42 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 				isArchived: false,
 		  };
 
+	interface CarModels {
+		Audi: {
+			Cars: string[];
+			Trucks: string[];
+			SUVs: string[];
+		};
+		Tesla: {
+			Cars: string[];
+			Trucks: string[];
+			SUVs: string[];
+		};
+		Honda: {
+			Cars: string[];
+			Trucks: string[];
+			SUVs: string[];
+		};
+	}
+
+	// Define the type for selectedMake
+	type SelectedMake = keyof CarModels;
+
 	const form = useForm<ProductFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues,
 	});
+
+	const selectedMake = form.getValues('makeId') as SelectedMake;
+
+	const useFormReset = (form, watchField, resetField) => {
+		useEffect(() => {
+			const watchFieldValue = form.watch(watchField);
+			form.setValue(resetField, ''); // Reset the field when watchField changes
+		}, [form, watchField, resetField]);
+	};
+
+	useFormReset(form, 'makeId', 'modelId');
 
 	const onSubmit = async (data: ProductFormValues) => {
 		try {
@@ -258,68 +291,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 						/> */}
 						<FormField
 							control={form.control}
-							name='makeId'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Make</FormLabel>
-									<Select
-										disabled={loading}
-										onValueChange={field.onChange}
-										value={field.value}
-										defaultValue={field.value}>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue
-													defaultValue={field.value}
-													placeholder='Select a make'
-												/>
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{makes.map((make) => (
-												<SelectItem key={make.id} value={make.id}>
-													{make.name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='modelId'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Model</FormLabel>
-									<Select
-										disabled={loading}
-										onValueChange={field.onChange}
-										value={field.value}
-										defaultValue={field.value}>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue
-													defaultValue={field.value}
-													placeholder='Select a model'
-												/>
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{models?.map((model) => (
-												<SelectItem key={model.id} value={model.id}>
-													{model.name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
 							name='categoryId'
 							render={({ field }) => (
 								<FormItem>
@@ -339,7 +310,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 										</FormControl>
 										<SelectContent>
 											{categories.map((category) => (
-												<SelectItem key={category.id} value={category.id}>
+												<SelectItem key={category.id} value={category.name}>
 													{category.name}
 												</SelectItem>
 											))}
@@ -349,6 +320,127 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 								</FormItem>
 							)}
 						/>
+						<FormField
+							control={form.control}
+							name='makeId'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Make</FormLabel>
+									<Select
+										disabled={loading}
+										onValueChange={field.onChange}
+										value={field.value}
+										defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue
+													defaultValue={field.value}
+													placeholder='Select a make'
+												/>
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{makes.map((make) => (
+												<SelectItem key={make.id} value={make.name}>
+													{make.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name='modelId'
+							render={({ field }) => {
+								const selectedMake = form.getValues('makeId') as SelectedMake;
+								const selectedCategory = form.getValues('categoryId') as
+									| 'Cars'
+									| 'Trucks'
+									| 'SUVs';
+
+								console.log(
+									'Inside model form input',
+									selectedMake,
+									selectedCategory,
+								);
+
+								let carModelsForSelectedMakeAndCategory: string[] = [];
+
+								if (
+									selectedMake &&
+									selectedCategory &&
+									carModels[selectedMake]
+								) {
+									carModelsForSelectedMakeAndCategory =
+										carModels[selectedMake][selectedCategory];
+								}
+
+								return (
+									<FormItem>
+										<FormLabel>Model</FormLabel>
+										<Select
+											disabled={loading}
+											onValueChange={field.onChange}
+											value={field.value}
+											defaultValue={field.value}>
+											<FormControl>
+												<SelectTrigger>
+													<SelectValue
+														defaultValue={field.value}
+														placeholder='Select a model'
+													/>
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{carModelsForSelectedMakeAndCategory.map(
+													(model, index) => (
+														<SelectItem key={index} value={model}>
+															{model}
+														</SelectItem>
+													),
+												)}
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								);
+							}}
+						/>
+						{/* <FormField
+							control={form.control}
+							name='modelId'
+							render={({ field }) => (
+									<FormItem>
+										<FormLabel>Model</FormLabel>
+										<Select
+											disabled={loading}
+											onValueChange={field.onChange}
+											value={field.value}
+											defaultValue={field.value}>
+											<FormControl>
+												<SelectTrigger>
+													<SelectValue
+														defaultValue={field.value}
+														placeholder='Select a model'
+													/>
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{models?.map((model) => (
+													<SelectItem key={model.id} value={model.id}>
+														{model.name}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+						/> */}
 						<FormField
 							control={form.control}
 							name='conditionId'
