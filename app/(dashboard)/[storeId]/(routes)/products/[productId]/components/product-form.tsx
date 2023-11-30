@@ -48,6 +48,7 @@ import {
 } from '@/components/ui/select';
 import ImageUpload from '@/components/ui/image-upload';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Container } from 'postcss';
 
 const formSchema = z.object({
 	images: z.object({ url: z.string() }).array(),
@@ -598,7 +599,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 								</FormItem>
 							)}
 						/>
-
 						<FormField
 							control={form.control}
 							name='colorId'
