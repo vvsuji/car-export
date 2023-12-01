@@ -167,12 +167,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 		};
 	}
 
-	// Define the type for selectedMake
 	type SelectedMake = keyof CarModels;
 
-  const form = useForm<ProductFormValues>({
-		resolver: zodResolver(formSchema), // Make sure formSchema is defined
-		defaultValues, // Make sure defaultValues is defined
+	const form = useForm<ProductFormValues>({
+		resolver: zodResolver(formSchema),
+		defaultValues,
 	});
 
 	type FormResetProps = {
@@ -185,18 +184,16 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 		useEffect(() => {
 			const watchFieldValue = form.watch(watchField);
 
-			// Check if the current field change is among the fields to reset
 			if (resetFields.includes(watchField)) {
 				resetFields.forEach((field) => {
 					if (field !== watchField) {
-						form.setValue(field, ''); // Reset the specified fields except for the watched field
+						form.setValue(field, '');
 					}
 				});
 			}
 		}, [form, watchField, resetFields]);
 	};
 
-	// Usage examples
 	useFormReset({ form, watchField: 'makeId', resetFields: ['modelId'] });
 	useFormReset({
 		form,
