@@ -1,4 +1,208 @@
-export const carModels = {
+export interface CarModels {
+	Acura: {
+		Cars: string[];
+		Trucks: string[];
+		SUVs: string[];
+	};
+	'Alfa Romeo': {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: never[];
+	};
+	Audi: {
+		Cars: string[];
+		Trucks: string[];
+		SUVs: string[];
+	};
+	BMW: {
+		Cars: string[];
+		Trucks: string[];
+		SUVs: string[];
+	};
+	Buick: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Cadillac: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Chevrolet: {
+		Cars: string[];
+		Trucks: string[];
+		SUVs: string[];
+	};
+	Chrysler: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Dodge: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Fiat: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: never[];
+	};
+	Ford: {
+		Cars: string[];
+		Trucks: string[];
+		SUVs: string[];
+	};
+	Genesis: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	GMC: {
+		Cars: string[];
+		Trucks: string[];
+		SUVs: string[];
+	};
+	Honda: {
+		Cars: string[];
+		Trucks: string[];
+		SUVs: string[];
+		Vans: string[];
+	};
+	Hyundai: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Infiniti: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Jaguar: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Jeep: {
+		Cars: never[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Kia: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Koenigsegg: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: never[];
+	};
+	'Land Rover': {
+		Cars: never[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Lexus: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Lincoln: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Lotus: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: never[];
+	};
+	Maserati: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: never[];
+	};
+	Mazda: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	'Mercedes-Benz': {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Mini: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: never[];
+	};
+	Mitsubishi: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Nissan: {
+		Cars: string[];
+		Trucks: string[];
+		SUVs: string[];
+	};
+	Pagani: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: never[];
+	};
+	Polestar: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: never[];
+	};
+	Porsche: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Ram: {
+		Cars: never[];
+		Trucks: string[];
+		SUVs: never[];
+	};
+	Renault: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Subaru: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Tesla: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Toyota: {
+		Cars: string[];
+		Trucks: string[];
+		SUVs: string[];
+	};
+	Volkswagen: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+	Volvo: {
+		Cars: string[];
+		Trucks: never[];
+		SUVs: string[];
+	};
+}
+
+export const carModels: CarModels = {
 	Acura: {
 		Cars: ['ILX', 'TLX', 'RLX', 'NSX'],
 		Trucks: ['MDX', 'RDX'],

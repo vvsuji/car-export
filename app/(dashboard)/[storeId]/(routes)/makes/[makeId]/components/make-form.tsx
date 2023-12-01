@@ -22,12 +22,10 @@ import {
 } from "@/components/ui/form"
 import { Separator } from "@/components/ui/separator"
 import { Heading } from "@/components/ui/heading"
-import { AlertModal } from "@/components/modals/alert-modal"
-import ImageUpload from '@/components/ui/image-upload';
+import { AlertModal } from '@/components/modals/alert-modal';
 
 const formSchema = z.object({
 	name: z.string().min(1),
-	imageUrl: z.string().min(1),
 });
 
 type MakeFormValues = z.infer<typeof formSchema>;
@@ -52,7 +50,6 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 		resolver: zodResolver(formSchema),
 		defaultValues: initialData || {
 			name: '',
-			imageUrl: '',
 		},
 	});
 
@@ -85,9 +82,7 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 			router.push(`/${params.storeId}/makes`);
 			toast.success('Make deleted.');
 		} catch (error: any) {
-			toast.error(
-				'Make sure you removed all categories using this make first.',
-			);
+			toast.error('Make sure you removed all products using this make first.');
 		} finally {
 			setLoading(false);
 			setOpen(false);
@@ -119,24 +114,6 @@ export const MakeForm: React.FC<MakeFormProps> = ({ initialData }) => {
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
 					className='space-y-8 w-full'>
-					<FormField
-						control={form.control}
-						name='imageUrl'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Background image</FormLabel>
-								<FormControl>
-									<ImageUpload
-										value={field.value ? [field.value] : []}
-										disabled={loading}
-										onChange={(url) => field.onChange(url)}
-										onRemove={() => field.onChange('')}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
 					<div className='md:grid md:grid-cols-3 gap-8'>
 						<FormField
 							control={form.control}

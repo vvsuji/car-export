@@ -11,11 +11,11 @@ import { ApiList } from "@/components/ui/api-list";
 
 import { columns, MakeColumn } from './columns';
 
-interface MakeClientProps {
+interface MakesClientProps {
 	data: MakeColumn[];
 }
 
-export const MakeClient: React.FC<MakeClientProps> = ({ data }) => {
+export const MakesClient: React.FC<MakesClientProps> = ({ data }) => {
 	const params = useParams();
 	const router = useRouter();
 
@@ -24,7 +24,7 @@ export const MakeClient: React.FC<MakeClientProps> = ({ data }) => {
 			<div className='flex items-center justify-between'>
 				<Heading
 					title={`Makes (${data.length})`}
-					description='Manage makes for your store'
+					description='Manage makes for your products'
 				/>
 				<Button onClick={() => router.push(`/${params.storeId}/makes/new`)}>
 					<Plus className='mr-2 h-4 w-4' /> Add New

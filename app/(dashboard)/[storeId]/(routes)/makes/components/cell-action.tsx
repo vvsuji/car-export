@@ -16,40 +16,38 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AlertModal } from "@/components/modals/alert-modal";
 
-import { MakeColumn } from "./columns";
+import { MakeColumn } from './columns';
 
 interface CellActionProps {
-  data: MakeColumn;
+	data: MakeColumn;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({
-  data,
-}) => {
-  const router = useRouter();
-  const params = useParams();
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+	const router = useRouter();
+	const params = useParams();
+	const [open, setOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
 
-  const onConfirm = async () => {
-    try {
-      setLoading(true);
-      await axios.delete(`/api/${params.storeId}/makes/${data.id}`);
-      toast.success('Make deleted.');
-      router.refresh();
-    } catch (error) {
-      toast.error('Make sure you removed all categories using this make first.');
-    } finally {
-      setOpen(false);
-      setLoading(false);
-    }
-  };
+	const onConfirm = async () => {
+		try {
+			setLoading(true);
+			await axios.delete(`/api/${params.storeId}/makes/${data.id}`);
+			toast.success('Make deleted.');
+			router.refresh();
+		} catch (error) {
+			toast.error('Make sure you removed all products using this make first.');
+		} finally {
+			setOpen(false);
+			setLoading(false);
+		}
+	};
 
-  const onCopy = (id: string) => {
-    navigator.clipboard.writeText(id);
-    toast.success('Make ID copied to clipboard.');
-  }
+	const onCopy = (id: string) => {
+		navigator.clipboard.writeText(id);
+		toast.success('Make ID copied to clipboard.');
+	};
 
-  return (
+	return (
 		<>
 			<AlertModal
 				isOpen={open}
@@ -70,10 +68,8 @@ export const CellAction: React.FC<CellActionProps> = ({
 						<Copy className='mr-2 h-4 w-4' /> Copy Id
 					</DropdownMenuItem>
 					<DropdownMenuItem
-						onClick={() =>
-							router.push(`/${params.storeId}/makes/${data.id}`)
-						}>
-						<Edit className='mr-2 h-4 w-4' /> Edit
+						onClick={() => router.push(`/${params.storeId}/makes/${data.id}`)}>
+						<Edit className='mr-2 h-4 w-4' /> Update
 					</DropdownMenuItem>
 					<DropdownMenuItem onClick={() => setOpen(true)}>
 						<Trash className='mr-2 h-4 w-4' /> Delete

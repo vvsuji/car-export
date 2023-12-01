@@ -49,7 +49,7 @@ import {
 import ImageUpload from '@/components/ui/image-upload';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Container } from 'postcss';
-import { carModels } from './car-models.js';
+import { carModels } from './car-models';
 
 const formSchema = z.object({
 	images: z.object({ url: z.string() }).array(),
@@ -149,23 +149,27 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 				isArchived: false,
 		  };
 
-	interface CarModels {
-		Audi: {
-			Cars: string[];
-			Trucks: string[];
-			SUVs: string[];
-		};
-		Tesla: {
-			Cars: string[];
-			Trucks: string[];
-			SUVs: string[];
-		};
-		Honda: {
-			Cars: string[];
-			Trucks: string[];
-			SUVs: string[];
-		};
-	}
+	// interface CarModels {
+	// 	Audi: {
+	// 		Cars: string[];
+	// 		Trucks: string[];
+	// 		SUVs: string[];
+	// 	};
+	// 	Tesla: {
+	// 		Cars: string[];
+	// 		Trucks: string[];
+	// 		SUVs: string[];
+	// 	};
+	// 	Honda: {
+	// 		Cars: string[];
+	// 		Trucks: string[];
+	// 		SUVs: string[];
+	// 	};
+	// }
+
+	// type SelectedMake = keyof CarModels;
+
+	type CarModels = typeof carModels;
 
 	type SelectedMake = keyof CarModels;
 
@@ -200,7 +204,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 		watchField: 'categoryId',
 		resetFields: ['makeId', 'modelId'],
 	});
-
 
 	const onSubmit = async (data: ProductFormValues) => {
 		try {

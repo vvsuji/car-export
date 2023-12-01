@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { auth } from '@clerk/nextjs';
 
-import prismadb from '@/lib/prismadb';
+import prismadb from "@/lib/prismadb";
+import { auth } from "@clerk/nextjs";
 
 export async function GET(
 	req: Request,
@@ -20,7 +20,7 @@ export async function GET(
 
 		return NextResponse.json(make);
 	} catch (error) {
-		console.log('[MAKE_GET]', error);
+		console.log('[_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -62,7 +62,8 @@ export async function DELETE(
 		console.log('[MAKE_DELETE]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
-}
+};
+
 
 export async function PATCH(
 	req: Request,
@@ -73,7 +74,7 @@ export async function PATCH(
 
 		const body = await req.json();
 
-		const { name, imageUrl } = body;
+		const { name } = body;
 
 		if (!userId) {
 			return new NextResponse('Unauthenticated', { status: 403 });
@@ -83,9 +84,9 @@ export async function PATCH(
 			return new NextResponse('Name is required', { status: 400 });
 		}
 
-		if (!imageUrl) {
-			return new NextResponse('Image URL is required', { status: 400 });
-		}
+		// if (!value) {
+		// 	return new NextResponse('Value is required', { status: 400 });
+		// }
 
 		if (!params.makeId) {
 			return new NextResponse('Make id is required', { status: 400 });
@@ -108,7 +109,6 @@ export async function PATCH(
 			},
 			data: {
 				name,
-				imageUrl,
 			},
 		});
 
