@@ -16,7 +16,6 @@ model Store {
   categories      Category[] @relation("StoreToCategory")
   products        Product[]  @relation("StoreToProduct")
   makes           Make[]     @relation("StoreToMake")
-  models           Model[]     @relation("StoreToModel")
   fuelTypes           FuelType[]     @relation("StoreToFuelType")
   transmissions           Transmission[]     @relation("StoreToTransmission")
   driveTypes           DriveType[]     @relation("StoreToDriveType")
@@ -71,8 +70,6 @@ model Product {
   isArchived  Boolean   @default(false)
   makeId      String    // Foreign Key to Make
   make        Make      @relation(fields: [makeId], references: [id])
-  modelId      String    // Foreign Key to Model
-  model        Model      @relation(fields: [modelId], references: [id])
   year     Int
   fuelTypeId      String    // Foreign Key to FuelType
   fuelType        FuelType      @relation(fields: [fuelTypeId], references: [id])
@@ -100,7 +97,6 @@ model Product {
   @@index([storeId])
   @@index([categoryId])
   @@index([makeId])
-  @@index([modelId])
   @@index([fuelTypeId])
   @@index([transmissionId])
   @@index([driveTypeId])
@@ -142,18 +138,6 @@ model Make {
   id          String    @id @default(uuid())
   storeId     String    // Foreign Key to Store
   store       Store     @relation("StoreToMake", fields: [storeId], references: [id])
-  name        String
-  products    Product[] // Relation to Product model
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([storeId])
-}
-
-model Model {
-  id          String    @id @default(uuid())
-  storeId     String    // Foreign Key to Store
-  store       Store     @relation("StoreToModel", fields: [storeId], references: [id])
   name        String
   products    Product[] // Relation to Product model
   createdAt   DateTime  @default(now())
