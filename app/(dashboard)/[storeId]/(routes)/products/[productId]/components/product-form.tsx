@@ -51,6 +51,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Container } from 'postcss';
 import { carModels } from './car-models';
 
+
 const formSchema = z.object({
 	images: z.object({ url: z.string() }).array(),
 	price: z.coerce.number().min(1),
@@ -358,12 +359,18 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 												/>
 											</SelectTrigger>
 										</FormControl>
-										<SelectContent>
-											{makes.map((make) => (
-												<SelectItem key={make.id} value={make.name}>
-													{make.name}
-												</SelectItem>
-											))}
+										<SelectContent className='max-h-40 overflow-y-auto z-10'>
+											{makes
+												.slice()
+												.sort((a, b) => a.name.localeCompare(b.name))
+												.map((make) => (
+													<SelectItem
+														key={make.id}
+														value={make.name}
+														className='px-2 py-1'>
+														{make.name}
+													</SelectItem>
+												))}
 										</SelectContent>
 									</Select>
 									<FormMessage />
@@ -380,12 +387,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 									| 'Cars'
 									| 'Trucks'
 									| 'SUVs';
-
-								console.log(
-									'Inside model form input',
-									selectedMake,
-									selectedCategory,
-								);
 
 								let carModelsForSelectedMakeAndCategory: string[] = [];
 
@@ -414,10 +415,13 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 													/>
 												</SelectTrigger>
 											</FormControl>
-											<SelectContent>
+											<SelectContent className='max-h-40 overflow-y-auto z-10'>
 												{carModelsForSelectedMakeAndCategory.map(
 													(model, index) => (
-														<SelectItem key={index} value={model}>
+														<SelectItem
+															key={index}
+															value={model}
+															className='px-2 py-1'>
 															{model}
 														</SelectItem>
 													),
@@ -429,6 +433,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 								);
 							}}
 						/>
+
 						{/* <FormField
 							control={form.control}
 							name='modelId'
