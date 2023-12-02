@@ -68,11 +68,11 @@ export function MainNav({
 			label: 'Makes',
 			active: pathname === `/${params.storeId}/makes`,
 		},
-		{
-			href: `/${params.storeId}/models`,
-			label: 'Models',
-			active: pathname === `/${params.storeId}/models`,
-		},
+		// {
+		// 	href: `/${params.storeId}/models`,
+		// 	label: 'Models',
+		// 	active: pathname === `/${params.storeId}/models`,
+		// },
 		{
 			href: `/${params.storeId}/options`,
 			label: 'Option',
@@ -118,7 +118,7 @@ export function MainNav({
 			route.href.includes(`/${params.storeId}/fueltypes`) ||
 			route.href.includes(`/${params.storeId}/locations`) ||
 			route.href.includes(`/${params.storeId}/makes`) ||
-			route.href.includes(`/${params.storeId}/models`) ||
+			// route.href.includes(`/${params.storeId}/models`) ||
 			route.href.includes(`/${params.storeId}/options`) ||
 			route.href.includes(`/${params.storeId}/passengers`) ||
 			route.href.includes(`/${params.storeId}/steerings`) ||
