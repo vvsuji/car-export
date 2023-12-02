@@ -113,7 +113,18 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 	const router = useRouter();
 
 	const [open, setOpen] = useState(false);
-	const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+	const handleCheckboxChange = (optionId: string) => {
+		setSelectedOptions((prevOptions) => {
+			if (prevOptions.includes(optionId)) {
+				return prevOptions.filter((opt) => opt !== optionId);
+			} else {
+				return [...prevOptions, optionId];
+			}
+		});
+	};
 
 	const title = initialData ? 'Edit product' : 'Create product';
 	const description = initialData ? 'Edit a product.' : 'Add a new product';
@@ -149,26 +160,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 				isFeatured: false,
 				isArchived: false,
 		  };
-
-	// interface CarModels {
-	// 	Audi: {
-	// 		Cars: string[];
-	// 		Trucks: string[];
-	// 		SUVs: string[];
-	// 	};
-	// 	Tesla: {
-	// 		Cars: string[];
-	// 		Trucks: string[];
-	// 		SUVs: string[];
-	// 	};
-	// 	Honda: {
-	// 		Cars: string[];
-	// 		Trucks: string[];
-	// 		SUVs: string[];
-	// 	};
-	// }
-
-	// type SelectedMake = keyof CarModels;
 
 	type CarModels = typeof carModels;
 
@@ -589,6 +580,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 								</FormItem>
 							)}
 						/>
+
 						<FormField
 							control={form.control}
 							name='optionId'
@@ -597,9 +589,17 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 									<FormLabel>Option</FormLabel>
 									<Select
 										disabled={loading}
-										onValueChange={field.onChange}
+										onValueChange={(value) => {
+											if (typeof value === 'string') {
+												setSelectedOptions([value]);
+											} else {
+												setSelectedOptions(value as string[]);
+											}
+											field.onChange(value);
+										}}
 										value={field.value}
 										defaultValue={field.value}>
+										{' '}
 										<FormControl>
 											<SelectTrigger>
 												<SelectValue
@@ -610,9 +610,18 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 										</FormControl>
 										<SelectContent>
 											{options?.map((option) => (
-												<SelectItem key={option.id} value={option.id}>
-													{option.name}
-												</SelectItem>
+												<div
+													key={option.id}
+													className='flex items-center space-x-2'>
+													<input
+														type='checkbox'
+														id={option.id}
+														value={option.id}
+														checked={selectedOptions.includes(option.id)}
+														onChange={() => handleCheckboxChange(option.id)}
+													/>
+													<label htmlFor={option.id}>{option.name}</label>
+												</div>
 											))}
 										</SelectContent>
 									</Select>
@@ -620,6 +629,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 								</FormItem>
 							)}
 						/>
+
 						<FormField
 							control={form.control}
 							name='passengerId'
