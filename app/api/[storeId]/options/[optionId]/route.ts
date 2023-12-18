@@ -7,39 +7,32 @@ import { auth } from '@clerk/nextjs';
 
 export async function GET(
 	req: Request,
-	{ params }: { params: { optionId: string } },
+	{ params }: { params: { optionId: string[] } },
 ) {
+	// Expect an array of string
 	try {
-		if (!params.optionId) {
-			return new NextResponse('Option id is required', { status: 400 });
+		if (!params.optionId || params.optionId.length === 0) {
+			return new NextResponse('Option id(s) are required', { status: 400 });
 		}
 
-		const option = await prismadb.option.findUnique({
+		const options = await prismadb.option.findMany({
 			where: {
-				id: params.optionId,
+				id: {
+					in: params.optionId,
+				},
 			},
 		});
 
-		return NextResponse.json(option);
+		return NextResponse.json(options);
 	} catch (error) {
 		console.log('[_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
 
-export async function GET_ALL(req: Request) {
-	try {
-		const options = await prismadb.option.findMany();
-		return NextResponse.json(options);
-	} catch (error) {
-		console.log('[OPTIONS_GET_ALL]', error);
-		return new NextResponse('Internal error', { status: 500 });
-	}
-}
-
 export async function DELETE(
 	req: Request,
-	{ params }: { params: { optionId: string; storeId: string } },
+	{ params }: { params: { optionId: string[]; storeId: string } },
 ) {
 	try {
 		const { userId } = auth();
@@ -48,8 +41,8 @@ export async function DELETE(
 			return new NextResponse('Unauthenticated', { status: 403 });
 		}
 
-		if (!params.optionId) {
-			return new NextResponse('Option id is required', { status: 400 });
+		if (!params.optionId || params.optionId.length === 0) {
+			return new NextResponse('Option id(s) are required', { status: 400 });
 		}
 
 		const storeByUserId = await prismadb.store.findFirst({
@@ -63,13 +56,16 @@ export async function DELETE(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
-		const option = await prismadb.option.delete({
+		const deletedOptions = await prismadb.option.deleteMany({
 			where: {
-				id: params.optionId,
+				id: {
+					in: params.optionId,
+				},
+				storeId: params.storeId,
 			},
 		});
 
-		return NextResponse.json(option);
+		return NextResponse.json(deletedOptions);
 	} catch (error) {
 		console.log('[OPTION_DELETE]', error);
 		return new NextResponse('Internal error', { status: 500 });
@@ -78,7 +74,7 @@ export async function DELETE(
 
 export async function PATCH(
 	req: Request,
-	{ params }: { params: { optionId: string; storeId: string } },
+	{ params }: { params: { optionId: string[]; storeId: string } },
 ) {
 	try {
 		const { userId } = auth();
@@ -95,8 +91,8 @@ export async function PATCH(
 			return new NextResponse('Name is required', { status: 400 });
 		}
 
-		if (!params.optionId) {
-			return new NextResponse('Option id is required', { status: 400 });
+		if (!params.optionId || params.optionId.length === 0) {
+			return new NextResponse('Option id(s) are required', { status: 400 });
 		}
 
 		const storeByUserId = await prismadb.store.findFirst({
@@ -110,18 +106,22 @@ export async function PATCH(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
-		const option = await prismadb.option.update({
+		const updatedOptions = await prismadb.option.updateMany({
 			where: {
-				id: params.optionId,
+				id: {
+					in: params.optionId,
+				},
+				storeId: params.storeId,
 			},
 			data: {
 				name,
 			},
 		});
 
-		return NextResponse.json(option);
+		return NextResponse.json(updatedOptions);
 	} catch (error) {
 		console.log('[OPTION_PATCH]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
+

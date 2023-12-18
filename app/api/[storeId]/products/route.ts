@@ -11,6 +11,7 @@ export async function POST(
 		const { userId } = auth();
 
 		const body = await req.json();
+		body.optionId = body.optionId || [];
 
 		const {
 			name,
@@ -32,6 +33,10 @@ export async function POST(
 			isFeatured,
 			isArchived,
 		} = body;
+
+		if (!Array.isArray(optionId) || optionId.length === 0) {
+			return new NextResponse('Option id(s) are required', { status: 400 });
+		}
 
 		if (!userId) {
 			return new NextResponse('Unauthenticated', { status: 403 });
@@ -138,8 +143,11 @@ export async function POST(
 				storeId: params.storeId,
 				images: {
 					createMany: {
-						data: [...images.map((image: { url: string }) => image)],
+						data: images.map((image: { url: string }) => ({ url: image.url })),
 					},
+				},
+				options: {
+					connect: optionId.map((id) => ({ id })),
 				},
 			},
 		});
@@ -198,11 +206,7 @@ export async function GET(
 				category: true,
 				color: true,
 				make: true,
-				productOptions: {
-					include: {
-						option: true,
-					},
-				},
+				options: true,
 			},
 			orderBy: {
 				createdAt: 'desc',

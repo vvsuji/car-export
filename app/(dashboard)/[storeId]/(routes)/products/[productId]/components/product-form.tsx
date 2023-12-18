@@ -63,7 +63,7 @@ const formSchema = z.object({
 	fuelTypeId: z.string().min(1),
 	locationId: z.string().min(1),
 	modelId: z.string().min(1),
-	optionId: z.string().min(1),
+	optionId: z.array(z.string().min(1)),
 	passengerId: z.string().min(1),
 	steeringId: z.string().min(1),
 	transmissionId: z.string().min(1),
@@ -129,6 +129,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 	const defaultValues = initialData
 		? {
 				...initialData,
+				optionId: Array.isArray(initialData?.optionId)
+					? initialData.optionId
+					: [],
 				price:
 					initialData?.price !== null
 						? parseFloat(String(initialData.price))
@@ -147,7 +150,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 				fuelType: '',
 				location: '',
 				model: '',
-				option: '',
+				option: [],
 				passenger: '',
 				steering: '',
 				transmission: '',
@@ -585,7 +588,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 									<FancyMultiSelect
 										options={fancyMultiSelectOptions}
 										selected={options.filter((o) =>
-											field.value ? field.value.includes(o.id) : false,
+											Array.isArray(field.value)
+												? field.value.includes(o.id)
+												: false,
 										)}
 										onChange={(selectedOptions) => {
 											const selectedIds = selectedOptions.map(
