@@ -198,6 +198,11 @@ export async function GET(
 				category: true,
 				color: true,
 				make: true,
+				productOptions: {
+					include: {
+						option: true,
+					},
+				},
 			},
 			orderBy: {
 				createdAt: 'desc',

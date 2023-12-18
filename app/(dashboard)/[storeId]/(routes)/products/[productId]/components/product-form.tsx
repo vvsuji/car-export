@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import * as z from "zod"
-import axios from "axios"
+import * as z from 'zod';
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, UseFormReturn } from 'react-hook-form';
@@ -50,7 +50,7 @@ import ImageUpload from '@/components/ui/image-upload';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Container } from 'postcss';
 import { carModels } from './car-models';
-
+import { FancyMultiSelect, OptionType } from './fancy-multi-select';
 
 const formSchema = z.object({
 	images: z.object({ url: z.string() }).array(),
@@ -113,18 +113,13 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 	const router = useRouter();
 
 	const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+	const [loading, setLoading] = useState(false);
+	const [selectedOptions, setSelectedOptions] = useState<OptionType[]>([]);
 
-	const handleCheckboxChange = (optionId: string) => {
-		setSelectedOptions((prevOptions) => {
-			if (prevOptions.includes(optionId)) {
-				return prevOptions.filter((opt) => opt !== optionId);
-			} else {
-				return [...prevOptions, optionId];
-			}
-		});
-	};
+	const fancyMultiSelectOptions = options.map((option) => ({
+		id: option.id,
+		name: option.name,
+	}));
 
 	const title = initialData ? 'Edit product' : 'Create product';
 	const description = initialData ? 'Edit a product.' : 'Add a new product';
@@ -586,45 +581,19 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 							name='optionId'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Option</FormLabel>
-									<Select
-										disabled={loading}
-										onValueChange={(value) => {
-											if (typeof value === 'string') {
-												setSelectedOptions([value]);
-											} else {
-												setSelectedOptions(value as string[]);
-											}
-											field.onChange(value);
+									<FormLabel>Options</FormLabel>
+									<FancyMultiSelect
+										options={fancyMultiSelectOptions}
+										selected={options.filter((o) =>
+											field.value ? field.value.includes(o.id) : false,
+										)}
+										onChange={(selectedOptions) => {
+											const selectedIds = selectedOptions.map(
+												(option) => option.id,
+											);
+											field.onChange(selectedIds);
 										}}
-										value={field.value}
-										defaultValue={field.value}>
-										{' '}
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue
-													defaultValue={field.value}
-													placeholder='Select option(s)'
-												/>
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{options?.map((option) => (
-												<div
-													key={option.id}
-													className='flex items-center space-x-2'>
-													<input
-														type='checkbox'
-														id={option.id}
-														value={option.id}
-														checked={selectedOptions.includes(option.id)}
-														onChange={() => handleCheckboxChange(option.id)}
-													/>
-													<label htmlFor={option.id}>{option.name}</label>
-												</div>
-											))}
-										</SelectContent>
-									</Select>
+									/>
 									<FormMessage />
 								</FormItem>
 							)}

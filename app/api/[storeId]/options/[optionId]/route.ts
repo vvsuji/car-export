@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import prismadb from '@/lib/prismadb';
 import { auth } from '@clerk/nextjs';
 
+
+
 export async function GET(
 	req: Request,
 	{ params }: { params: { optionId: string } },
@@ -21,6 +23,16 @@ export async function GET(
 		return NextResponse.json(option);
 	} catch (error) {
 		console.log('[_GET]', error);
+		return new NextResponse('Internal error', { status: 500 });
+	}
+}
+
+export async function GET_ALL(req: Request) {
+	try {
+		const options = await prismadb.option.findMany();
+		return NextResponse.json(options);
+	} catch (error) {
+		console.log('[OPTIONS_GET_ALL]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
