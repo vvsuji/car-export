@@ -146,9 +146,9 @@ export async function POST(
 						data: images.map((image: { url: string }) => ({ url: image.url })),
 					},
 				},
-				options: {
-					connect: optionId.map((id) => ({ id })),
-				},
+				// options: {
+				// 	connect: optionId.map((id) => ({ id })),
+				// },
 			},
 		});
 
