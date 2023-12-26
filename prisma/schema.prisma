@@ -156,27 +156,15 @@ model Model {
 }
 
 model Option {
-  id             String            @id @default(uuid())
-  storeId        String // Foreign Key to Store
-  store          Store             @relation("StoreToOption", fields: [storeId], references: [id])
-  name           String
-  productOptions ProductOption[]
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
-  optionProducts OptionToProduct[]
-  Product        Product[]
-  products       Product[]         @relation("ProductToOption")
+  id        String    @id
+  storeId   String // Foreign Key to Store
+  store     Store     @relation("StoreToOption", fields: [storeId], references: [id])
+  name      String
+  products  Product[] // Relation to Product model
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@index([storeId])
-}
-
-model OptionToProduct {
-  optionId  String
-  productId String
-  option    Option  @relation(fields: [optionId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
-
-  @@id([optionId, productId])
 }
 
 model Order {
@@ -217,45 +205,42 @@ model Passenger {
 }
 
 model Product {
-  id             String            @id @default(uuid())
+  id             String       @id @default(uuid())
   storeId        String // Foreign Key to Store
-  store          Store             @relation("StoreToProduct", fields: [storeId], references: [id])
+  store          Store        @relation("StoreToProduct", fields: [storeId], references: [id])
   categoryId     String // Foreign Key to Category
-  category       Category          @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  category       Category     @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name           String
   price          Decimal
-  isFeatured     Boolean           @default(false)
-  isArchived     Boolean           @default(false)
+  isFeatured     Boolean      @default(false)
+  isArchived     Boolean      @default(false)
   makeId         String // Foreign Key to Make
-  make           Make              @relation(fields: [makeId], references: [id])
+  make           Make         @relation(fields: [makeId], references: [id])
   modelId        String // Foreign Key to Model
-  model          Model             @relation(fields: [modelId], references: [id])
+  model          Model        @relation(fields: [modelId], references: [id])
   year           Int
   fuelTypeId     String // Foreign Key to FuelType
-  fuelType       FuelType          @relation(fields: [fuelTypeId], references: [id])
+  fuelType       FuelType     @relation(fields: [fuelTypeId], references: [id])
   transmissionId String // Foreign Key to Transmission
-  transmission   Transmission      @relation(fields: [transmissionId], references: [id])
+  transmission   Transmission @relation(fields: [transmissionId], references: [id])
   driveTypeId    String // Foreign Key to DriveType
-  driveType      DriveType         @relation(fields: [driveTypeId], references: [id])
+  driveType      DriveType    @relation(fields: [driveTypeId], references: [id])
   conditionId    String // Foreign Key to Condition
-  condition      Condition         @relation(fields: [conditionId], references: [id])
+  condition      Condition    @relation(fields: [conditionId], references: [id])
   passengerId    String // Foreign Key to Passenger
-  passenger      Passenger         @relation(fields: [passengerId], references: [id])
+  passenger      Passenger    @relation(fields: [passengerId], references: [id])
   optionId       String // Foreign Key to Option
-  option         Option            @relation(fields: [optionId], references: [id])
-  options        Option[]          @relation("ProductToOption")
-  productOptions ProductOption[]
-  optionProducts OptionToProduct[]
+  option         Option       @relation(fields: [optionId], references: [id])
   colorId        String // Foreign Key to Color
-  color          Color             @relation(fields: [colorId], references: [id])
+  color          Color        @relation(fields: [colorId], references: [id])
   steeringId     String // Foreign Key to Steering
-  steering       Steering          @relation(fields: [steeringId], references: [id])
+  steering       Steering     @relation(fields: [steeringId], references: [id])
   locationId     String // Foreign Key to Location
-  location       Location          @relation(fields: [locationId], references: [id])
+  location       Location     @relation(fields: [locationId], references: [id])
   images         Image[] // Relation to Image model
   orderItems     OrderItem[] // Relation to Order model
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
   @@index([storeId])
   @@index([categoryId])
@@ -269,17 +254,6 @@ model Product {
   @@index([colorId])
   @@index([steeringId])
   @@index([locationId])
-  @@index([optionId])
-}
-
-model ProductOption {
-  productId String
-  product   Product @relation(fields: [productId], references: [id])
-  optionId  String
-  option    Option  @relation(fields: [optionId], references: [id])
-
-  @@id([productId, optionId])
-  @@index([productId])
   @@index([optionId])
 }
 

@@ -34,17 +34,21 @@ export async function POST(
 			isArchived,
 		} = body;
 
-		if (!Array.isArray(optionId) || optionId.length === 0) {
-			return new NextResponse('Option id(s) are required', { status: 400 });
+		if (!Array.isArray(optionId)) {
+			return new NextResponse('Option id must be an array', { status: 400 });
+		} else if (optionId.length === 0) {
+			return new NextResponse('Option id array must not be empty', {
+				status: 400,
+			});
 		}
 
 		if (!userId) {
 			return new NextResponse('Unauthenticated', { status: 403 });
 		}
 
-		if (!name) {
-			return new NextResponse('Name is required', { status: 400 });
-		}
+		// if (!name) {
+		// 	return new NextResponse('Name is required', { status: 400 });
+		// }
 
 		if (!images || !images.length) {
 			return new NextResponse('Images are required', { status: 400 });
@@ -121,9 +125,10 @@ export async function POST(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
+		const selectedOptionIds: string[] = optionId.map((id) => id);
+
 		const product = await prismadb.product.create({
 			data: {
-				name,
 				price,
 				isFeatured,
 				isArchived,
@@ -146,9 +151,10 @@ export async function POST(
 						data: images.map((image: { url: string }) => ({ url: image.url })),
 					},
 				},
-				// options: {
-				// 	connect: optionId.map((id) => ({ id })),
-				// },
+				option: {
+					// @ts-ignore
+					connect: selectedOptionIds.map((id) => ({ id })),
+				},
 			},
 		});
 
@@ -206,7 +212,7 @@ export async function GET(
 				category: true,
 				color: true,
 				make: true,
-				options: true,
+				option: true,
 			},
 			orderBy: {
 				createdAt: 'desc',

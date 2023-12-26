@@ -168,6 +168,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 		defaultValues,
 	});
 
+	useEffect(() => {
+		const selectedIds = selectedOptions.map((option) => option.id);
+		form.setValue('optionId', selectedIds);
+	}, [selectedOptions, form]);
+
 	type FormResetProps = {
 		form: UseFormReturn<ProductFormValues>;
 		watchField: keyof ProductFormValues;
@@ -196,20 +201,26 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 	});
 
 	const onSubmit = async (data: ProductFormValues) => {
+		console.log(data);
 		try {
 			setLoading(true);
-			if (initialData) {
-				await axios.patch(
-					`/api/${params.storeId}/products/${params.productId}`,
-					data,
-				);
-			} else {
-				await axios.post(`/api/${params.storeId}/products`, data);
-			}
+			const updatedData = {
+				...data,
+				option: selectedOptions.map((o) => o.id), // Convert selected options to just IDs
+			};
+
+			const response = initialData
+				? await axios.patch(
+						`/api/${params.storeId}/products/${params.productId}`,
+						updatedData,
+				  )
+				: await axios.post(`/api/${params.storeId}/products`, updatedData);
+
 			router.refresh();
 			router.push(`/${params.storeId}/products`);
 			toast.success(toastMessage);
 		} catch (error: any) {
+			console.error('Error posting data:', error);
 			toast.error('Something went wrong.');
 		} finally {
 			setLoading(false);
@@ -587,7 +598,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 									<FormLabel>Options</FormLabel>
 									<FancyMultiSelect
 										options={fancyMultiSelectOptions}
-										selected={options.filter((o) =>
+										selected={fancyMultiSelectOptions.filter((o) =>
 											Array.isArray(field.value)
 												? field.value.includes(o.id)
 												: false,
@@ -596,8 +607,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 											const selectedIds = selectedOptions.map(
 												(option) => option.id,
 											);
-											field.onChange(selectedIds);
-										}}
+											form.setValue('optionId', selectedIds);
+											console.log(selectedIds);
+										}} // Update form state
 									/>
 									<FormMessage />
 								</FormItem>

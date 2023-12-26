@@ -7,6 +7,7 @@ import {
 	CommandItem,
 	CommandPrimitive,
 } from '@/components/ui/command';
+import { Option } from '@prisma/client';
 
 export type OptionType = {
 	id: string;
@@ -30,14 +31,15 @@ export function FancyMultiSelect({
 	const [selected, setSelected] = React.useState<OptionType[]>(
 		externalSelected || [],
 	);
+
 	const [inputValue, setInputValue] = React.useState('');
 
 	React.useEffect(() => {
-		// Function expression instead of declaration
 		const fetchOptions = async () => {
 			const response = await fetch('/api/options');
 			const data = await response.json();
-			setOptions(data);
+			// Ensure that the data structure matches the OptionType
+			setOptions(data.map((opt: Option) => ({ id: opt.id, name: opt.name })));
 		};
 
 		if (!propOptions) {
