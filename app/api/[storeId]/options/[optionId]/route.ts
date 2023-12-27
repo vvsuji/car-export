@@ -5,20 +5,17 @@ import { auth } from '@clerk/nextjs';
 
 
 
-export async function GET(
-	req: Request,
-	{ params }: { params: { optionId: string[] } },
-) {
+export async function GET(req: Request, { params }: { params: { option: string[] } }) {
 	// Expect an array of string
 	try {
-		if (!params.optionId || params.optionId.length === 0) {
+		if (!params.option || params.option.length === 0) {
 			return new NextResponse('Option id(s) are required', { status: 400 });
 		}
 
 		const options = await prismadb.option.findMany({
 			where: {
 				id: {
-					in: params.optionId,
+					in: params.option,
 				},
 			},
 		});
@@ -32,7 +29,7 @@ export async function GET(
 
 export async function DELETE(
 	req: Request,
-	{ params }: { params: { optionId: string[]; storeId: string } },
+	{ params }: { params: { option: string[]; storeId: string } },
 ) {
 	try {
 		const { userId } = auth();
@@ -41,7 +38,7 @@ export async function DELETE(
 			return new NextResponse('Unauthenticated', { status: 403 });
 		}
 
-		if (!params.optionId || params.optionId.length === 0) {
+		if (!params.option || params.option.length === 0) {
 			return new NextResponse('Option id(s) are required', { status: 400 });
 		}
 
@@ -59,7 +56,7 @@ export async function DELETE(
 		const deletedOptions = await prismadb.option.deleteMany({
 			where: {
 				id: {
-					in: params.optionId,
+					in: params.option,
 				},
 				storeId: params.storeId,
 			},
@@ -74,7 +71,7 @@ export async function DELETE(
 
 export async function PATCH(
 	req: Request,
-	{ params }: { params: { optionId: string[]; storeId: string } },
+	{ params }: { params: { option: string[]; storeId: string } },
 ) {
 	try {
 		const { userId } = auth();
@@ -91,7 +88,7 @@ export async function PATCH(
 			return new NextResponse('Name is required', { status: 400 });
 		}
 
-		if (!params.optionId || params.optionId.length === 0) {
+		if (!params.option || params.option.length === 0) {
 			return new NextResponse('Option id(s) are required', { status: 400 });
 		}
 
@@ -109,7 +106,7 @@ export async function PATCH(
 		const updatedOptions = await prismadb.option.updateMany({
 			where: {
 				id: {
-					in: params.optionId,
+					in: params.option,
 				},
 				storeId: params.storeId,
 			},

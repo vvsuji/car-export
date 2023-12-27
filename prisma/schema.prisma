@@ -210,7 +210,6 @@ model Product {
   store          Store        @relation("StoreToProduct", fields: [storeId], references: [id])
   categoryId     String // Foreign Key to Category
   category       Category     @relation("CategoryToProduct", fields: [categoryId], references: [id])
-  name           String
   price          Decimal
   isFeatured     Boolean      @default(false)
   isArchived     Boolean      @default(false)

@@ -228,6 +228,11 @@ export async function PATCH(
 						data: [...images.map((image: { url: string }) => image)],
 					},
 				},
+
+				// @ts-ignore
+				option: {
+					connect: option.map((id: string) => ({ id })), // Connect new options
+				},
 			},
 		});
 

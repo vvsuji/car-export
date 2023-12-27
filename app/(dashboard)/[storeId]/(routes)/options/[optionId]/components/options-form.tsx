@@ -26,6 +26,7 @@ import { AlertModal } from '@/components/modals/alert-modal';
 
 const formSchema = z.object({
 	name: z.string().min(1),
+	// value: z.string().min(1),
 });
 
 type OptionFormValues = z.infer<typeof formSchema>;
@@ -53,26 +54,26 @@ export const OptionForm: React.FC<OptionFormProps> = ({ initialData }) => {
 		},
 	});
 
-const onSubmit = async (data: OptionFormValues) => {
-	try {
-		setLoading(true);
-		if (initialData) {
-			await axios.patch(
-				`/api/${params.storeId}/options/${params.optionId}`,
-				data,
-			);
-		} else {
-			await axios.post(`/api/${params.storeId}/options`, data);
+	const onSubmit = async (data: OptionFormValues) => {
+		try {
+			setLoading(true);
+			if (initialData) {
+				await axios.patch(
+					`/api/${params.storeId}/options/${params.optionId}`,
+					data,
+				);
+			} else {
+				await axios.post(`/api/${params.storeId}/options`, data);
+			}
+			router.refresh();
+			router.push(`/${params.storeId}/options`);
+			toast.success(toastMessage);
+		} catch (error: any) {
+			toast.error('Something went wrong.');
+		} finally {
+			setLoading(false);
 		}
-		router.refresh();
-		router.push(`/${params.storeId}/options`);
-		toast.success(toastMessage);
-	} catch (error: any) {
-		toast.error('Something went wrong.');
-	} finally {
-		setLoading(false);
-	}
-};
+	};
 
 	const onDelete = async () => {
 		try {
@@ -144,6 +145,7 @@ const onSubmit = async (data: OptionFormValues) => {
 	);
 };
 
+
 // 'use client';
 
 // import * as z from 'zod';
@@ -172,7 +174,7 @@ const onSubmit = async (data: OptionFormValues) => {
 
 // const formSchema = z.object({
 // 	name: z.string().min(1, 'Name is required'),
-// 	optionId: z.array(z.string()).min(1, 'Please select at least one option'),
+// 	option: z.array(z.string()).min(1, 'Please select at least one option'),
 // });
 
 // interface OptionType {
@@ -229,7 +231,7 @@ const onSubmit = async (data: OptionFormValues) => {
 // 		resolver: zodResolver(formSchema),
 // 		defaultValues: {
 // 			name: '',
-// 			optionId: initialData ?? [],
+// 			option: initialData ?? [],
 // 		},
 // 	});
 
@@ -239,7 +241,7 @@ const onSubmit = async (data: OptionFormValues) => {
 // 			setLoading(true);
 // 			if (initialData) {
 // 				await axios.patch(
-// 					`/api/${params.storeId}/options/${params.optionId}`,
+// 					`/api/${params.storeId}/options/${params.option}`,
 // 					data,
 // 				);
 // 			} else {
@@ -258,7 +260,7 @@ const onSubmit = async (data: OptionFormValues) => {
 // 	const onDelete = async () => {
 // 		try {
 // 			setLoading(true);
-// 			await axios.delete(`/api/${params.storeId}/options/${params.optionId}`);
+// 			await axios.delete(`/api/${params.storeId}/options/${params.option}`);
 // 			router.refresh();
 // 			router.push(`/${params.storeId}/options`);
 // 			toast.success('Option deleted.');
@@ -319,7 +321,7 @@ const onSubmit = async (data: OptionFormValues) => {
 // 						{/* The form field for selecting multiple options */}
 // 						<FormField
 // 							control={form.control}
-// 							name='optionId'
+// 							name='option'
 // 							render={({ field }) => (
 // 								<FormItem>
 // 									<FormLabel>Options</FormLabel>

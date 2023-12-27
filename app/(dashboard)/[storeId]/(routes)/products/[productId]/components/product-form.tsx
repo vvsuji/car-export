@@ -63,7 +63,7 @@ const formSchema = z.object({
 	fuelTypeId: z.string().min(1),
 	locationId: z.string().min(1),
 	modelId: z.string().min(1),
-	optionId: z.array(z.string().min(1)),
+	option: z.array(z.string().min(1)),
 	passengerId: z.string().min(1),
 	steeringId: z.string().min(1),
 	transmissionId: z.string().min(1),
@@ -129,7 +129,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 	const defaultValues = initialData
 		? {
 				...initialData,
-				optionId: Array.isArray(initialData?.optionId)
+				option: Array.isArray(initialData?.optionId)
 					? initialData.optionId
 					: [],
 				price:
@@ -170,7 +170,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
 	useEffect(() => {
 		const selectedIds = selectedOptions.map((option) => option.id);
-		form.setValue('optionId', selectedIds);
+		form.setValue('option', selectedIds);
 	}, [selectedOptions, form]);
 
 	type FormResetProps = {
@@ -206,7 +206,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 			setLoading(true);
 			const updatedData = {
 				...data,
-				option: selectedOptions.map((o) => o.id), // Convert selected options to just IDs
+				// option: selectedOptions.map((o) => o.id), // Convert selected options to just IDs
 			};
 
 			const response = initialData
@@ -592,24 +592,21 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
 						<FormField
 							control={form.control}
-							name='optionId'
+							name='option'
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Options</FormLabel>
 									<FancyMultiSelect
 										options={fancyMultiSelectOptions}
 										selected={fancyMultiSelectOptions.filter((o) =>
-											Array.isArray(field.value)
-												? field.value.includes(o.id)
-												: false,
+											field.value.includes(o.id),
 										)}
 										onChange={(selectedOptions) => {
 											const selectedIds = selectedOptions.map(
 												(option) => option.id,
 											);
-											form.setValue('optionId', selectedIds);
-											console.log(selectedIds);
-										}} // Update form state
+											form.setValue('option', selectedIds); // Make sure this matches the schema
+										}}
 									/>
 									<FormMessage />
 								</FormItem>

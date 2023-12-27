@@ -11,7 +11,8 @@ export async function POST(
 		const { userId } = auth();
 
 		const body = await req.json();
-		body.optionId = body.optionId || [];
+
+		// body.option = body.option || [];
 
 		const {
 			name,
@@ -24,7 +25,7 @@ export async function POST(
 			fuelTypeId,
 			locationId,
 			modelId,
-			optionId,
+			option,
 			passengerId,
 			steeringId,
 			transmissionId,
@@ -34,12 +35,15 @@ export async function POST(
 			isArchived,
 		} = body;
 
-		if (!Array.isArray(optionId)) {
-			return new NextResponse('Option id must be an array', { status: 400 });
-		} else if (optionId.length === 0) {
-			return new NextResponse('Option id array must not be empty', {
-				status: 400,
-			});
+		if (
+			!Array.isArray(option) ||
+			option.length === 0 ||
+			!option.every((id) => typeof id === 'string')
+		) {
+			return new NextResponse(
+				'Option id must be an array of strings and must not be empty',
+				{ status: 400 },
+			);
 		}
 
 		if (!userId) {
@@ -94,10 +98,6 @@ export async function POST(
 			return new NextResponse('Model id is required', { status: 400 });
 		}
 
-		if (!optionId) {
-			return new NextResponse('Option id is required', { status: 400 });
-		}
-
 		if (!passengerId) {
 			return new NextResponse('Passenger id is required', { status: 400 });
 		}
@@ -125,27 +125,14 @@ export async function POST(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
-		const selectedOptionIds: string[] = optionId.map((id) => id);
+		const selectedOptions = option.map((id) => ({ id }));
 
 		const product = await prismadb.product.create({
 			data: {
 				price,
 				isFeatured,
 				isArchived,
-				categoryId,
-				colorId,
-				makeId,
-				conditionId,
-				driveTypeId,
-				fuelTypeId,
-				locationId,
-				modelId,
-				optionId,
-				passengerId,
-				steeringId,
-				transmissionId,
 				year,
-				storeId: params.storeId,
 				images: {
 					createMany: {
 						data: images.map((image: { url: string }) => ({ url: image.url })),
@@ -153,7 +140,79 @@ export async function POST(
 				},
 				option: {
 					// @ts-ignore
-					connect: selectedOptionIds.map((id) => ({ id })),
+					connect: selectedOptions,
+				},
+				store: {
+					// @ts-ignore
+					connect: {
+						id: params.storeId,
+					},
+				},
+				category: {
+					// @ts-ignore
+					connect: {
+						id: categoryId,
+					},
+				},
+				make: {
+					// @ts-ignore
+					connect: {
+						id: makeId,
+					},
+				},
+				model: {
+					// @ts-ignore
+					connect: {
+						id: modelId,
+					},
+				},
+				fuelType: {
+					// @ts-ignore
+					connect: {
+						id: fuelTypeId,
+					},
+				},
+				transmission: {
+					// @ts-ignore
+					connect: {
+						id: transmissionId,
+					},
+				},
+				driveType: {
+					// @ts-ignore
+					connect: {
+						id: driveTypeId,
+					},
+				},
+				condition: {
+					// @ts-ignore
+					connect: {
+						id: conditionId,
+					},
+				},
+				passenger: {
+					// @ts-ignore
+					connect: {
+						id: passengerId,
+					},
+				},
+				color: {
+					// @ts-ignore
+					connect: {
+						id: colorId,
+					},
+				},
+				steering: {
+					// @ts-ignore
+					connect: {
+						id: steeringId,
+					},
+				},
+				location: {
+					// @ts-ignore
+					connect: {
+						id: locationId,
+					},
 				},
 			},
 		});
@@ -179,7 +238,7 @@ export async function GET(
 		const fuelTypeId = searchParams.get('fuelTypeId') || undefined;
 		const locationId = searchParams.get('locationId') || undefined;
 		const modelId = searchParams.get('modelId') || undefined;
-		const optionId = searchParams.get('optionId') || undefined;
+		const option = searchParams.get('option') || undefined;
 		const passengerId = searchParams.get('passengerId') || undefined;
 		const steeringId = searchParams.get('steeringId') || undefined;
 		const transmissionId = searchParams.get('transmissionId') || undefined;
@@ -200,7 +259,6 @@ export async function GET(
 				fuelTypeId,
 				locationId,
 				modelId,
-				optionId,
 				passengerId,
 				steeringId,
 				transmissionId,
