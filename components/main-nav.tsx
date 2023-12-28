@@ -159,7 +159,7 @@ export function MainNav({
 				<div className='relative'>
 					<DropdownMenu>
 						<DropdownMenuTrigger>
-							<button>More</button>
+							<p>More</p>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent>
 							{dropdownRoutes.map((route) => (
