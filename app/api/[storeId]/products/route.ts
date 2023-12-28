@@ -11,7 +11,6 @@ export async function POST(
 		const { userId } = auth();
 
 		const body = await req.json();
-		body.optionId = body.optionId || [];
 
 		const {
 			name,
@@ -24,7 +23,7 @@ export async function POST(
 			fuelTypeId,
 			locationId,
 			modelId,
-			optionId,
+			option,
 			passengerId,
 			steeringId,
 			transmissionId,
@@ -34,17 +33,24 @@ export async function POST(
 			isArchived,
 		} = body;
 
-		if (!Array.isArray(optionId) || optionId.length === 0) {
-			return new NextResponse('Option id(s) are required', { status: 400 });
+		if (
+			!Array.isArray(option) ||
+			option.length === 0 ||
+			!option.every((id) => typeof id === 'string')
+		) {
+			return new NextResponse(
+				'Option id must be an array of strings and must not be empty',
+				{ status: 400 },
+			);
 		}
 
 		if (!userId) {
 			return new NextResponse('Unauthenticated', { status: 403 });
 		}
 
-		if (!name) {
-			return new NextResponse('Name is required', { status: 400 });
-		}
+		// if (!name) {
+		// 	return new NextResponse('Name is required', { status: 400 });
+		// }
 
 		if (!images || !images.length) {
 			return new NextResponse('Images are required', { status: 400 });
@@ -90,10 +96,6 @@ export async function POST(
 			return new NextResponse('Model id is required', { status: 400 });
 		}
 
-		if (!optionId) {
-			return new NextResponse('Option id is required', { status: 400 });
-		}
-
 		if (!passengerId) {
 			return new NextResponse('Passenger id is required', { status: 400 });
 		}
@@ -121,40 +123,85 @@ export async function POST(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
+
 		const product = await prismadb.product.create({
 			data: {
-				name,
 				price,
 				isFeatured,
 				isArchived,
-				categoryId,
-				colorId,
-				makeId,
-				conditionId,
-				driveTypeId,
-				fuelTypeId,
-				locationId,
-				modelId,
-				optionId,
-				passengerId,
-				steeringId,
-				transmissionId,
 				year,
-				storeId: params.storeId,
+				optionId: "hey, don't delete me unless you remove optionId from Product",
 				images: {
 					createMany: {
 						data: images.map((image: { url: string }) => ({ url: image.url })),
 					},
 				},
-				// options: {
-				// 	connect: optionId.map((id) => ({ id })),
-				// },
+				option: {
+					connect: option.map((id: string) => ({ id })),
+					// expects in this form: [{ id: "8" }, { id: "9" }, { id: "10" }],
+				},
+				store: {
+					connect: {
+						id: params.storeId,
+					},
+				},
+				category: {
+					connect: {
+						id: categoryId,
+					},
+				},
+				make: {
+					connect: {
+						id: makeId,
+					},
+				},
+				model: modelId,
+				fuelType: {
+					connect: {
+						id: fuelTypeId,
+					},
+				},
+				transmission: {
+					connect: {
+						id: transmissionId,
+					},
+				},
+				driveType: {
+					connect: {
+						id: driveTypeId,
+					},
+				},
+				condition: {
+					connect: {
+						id: conditionId,
+					},
+				},
+				passenger: {
+					connect: {
+						id: passengerId,
+					},
+				},
+				color: {
+					connect: {
+						id: colorId,
+					},
+				},
+				steering: {
+					connect: {
+						id: steeringId,
+					},
+				},
+				location: {
+					connect: {
+						id: locationId,
+					},
+				},
 			},
 		});
 
 		return NextResponse.json(product);
 	} catch (error) {
-		console.log('[PRODUCTS_POST]', error);
+		console.error('[PRODUCTS_POST]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -172,8 +219,8 @@ export async function GET(
 		const driveTypeId = searchParams.get('driveTypeId') || undefined;
 		const fuelTypeId = searchParams.get('fuelTypeId') || undefined;
 		const locationId = searchParams.get('locationId') || undefined;
-		const modelId = searchParams.get('modelId') || undefined;
-		const optionId = searchParams.get('optionId') || undefined;
+		const model = searchParams.get('modelId') || undefined;
+		const option = searchParams.get('option') || undefined;
 		const passengerId = searchParams.get('passengerId') || undefined;
 		const steeringId = searchParams.get('steeringId') || undefined;
 		const transmissionId = searchParams.get('transmissionId') || undefined;
@@ -193,8 +240,7 @@ export async function GET(
 				driveTypeId,
 				fuelTypeId,
 				locationId,
-				modelId,
-				optionId,
+				model,
 				passengerId,
 				steeringId,
 				transmissionId,
@@ -206,7 +252,7 @@ export async function GET(
 				category: true,
 				color: true,
 				make: true,
-				options: true,
+				option: true,
 			},
 			orderBy: {
 				createdAt: 'desc',
@@ -215,7 +261,7 @@ export async function GET(
 
 		return NextResponse.json(products);
 	} catch (error) {
-		console.log('[PRODUCTS_GET]', error);
+		console.error('[PRODUCTS_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 };

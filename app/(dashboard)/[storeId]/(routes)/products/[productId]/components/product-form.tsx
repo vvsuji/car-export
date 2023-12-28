@@ -63,7 +63,7 @@ const formSchema = z.object({
 	fuelTypeId: z.string().min(1),
 	locationId: z.string().min(1),
 	modelId: z.string().min(1),
-	optionId: z.array(z.string().min(1)),
+	option: z.array(z.string().min(1)),
 	passengerId: z.string().min(1),
 	steeringId: z.string().min(1),
 	transmissionId: z.string().min(1),
@@ -129,7 +129,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 	const defaultValues = initialData
 		? {
 				...initialData,
-				optionId: Array.isArray(initialData?.optionId)
+				option: Array.isArray(initialData?.optionId)
 					? initialData.optionId
 					: [],
 				price:
@@ -168,6 +168,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 		defaultValues,
 	});
 
+	useEffect(() => {
+		const selectedIds = selectedOptions.map((option) => option.id);
+		form.setValue('option', selectedIds);
+	}, [selectedOptions, form]);
+
 	type FormResetProps = {
 		form: UseFormReturn<ProductFormValues>;
 		watchField: keyof ProductFormValues;
@@ -196,20 +201,41 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 	});
 
 	const onSubmit = async (data: ProductFormValues) => {
+		console.log(data);
 		try {
 			setLoading(true);
-			if (initialData) {
-				await axios.patch(
-					`/api/${params.storeId}/products/${params.productId}`,
-					data,
-				);
-			} else {
-				await axios.post(`/api/${params.storeId}/products`, data);
-			}
+			// currently, categoryId / makeId / modelId have deceptive naming
+			// so we'll convert each "Id" (read: name) into an actual id
+
+			// todo: make this readable lol (laugh out loud)
+			data.categoryId = (() => {
+				for (const cat of categories) {
+					if (cat.name === data.categoryId) return cat.id;
+				}
+			})() || data.categoryId;
+			data.makeId = (() => {
+				for (const make of makes) { // mighty
+					if (make.name === data.makeId) return make.id; // yeah this wont be confusing
+				}
+			})() || data.makeId;
+
+			const updatedData = {
+				...data,
+				// option: selectedOptions.map((o) => o.id), // Convert selected options to just IDs
+			};
+
+			const response = initialData
+				? await axios.patch(
+						`/api/${params.storeId}/products/${params.productId}`,
+						updatedData,
+				  )
+				: await axios.post(`/api/${params.storeId}/products`, updatedData);
+
 			router.refresh();
 			router.push(`/${params.storeId}/products`);
 			toast.success(toastMessage);
 		} catch (error: any) {
+			console.error('Error posting data:', error);
 			toast.error('Something went wrong.');
 		} finally {
 			setLoading(false);
@@ -224,6 +250,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 			router.push(`/${params.storeId}/products`);
 			toast.success('Product deleted.');
 		} catch (error: any) {
+			console.error('Error deleting data:', error);
 			toast.error('Something went wrong.');
 		} finally {
 			setLoading(false);
@@ -581,22 +608,21 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
 						<FormField
 							control={form.control}
-							name='optionId'
+							name='option'
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Options</FormLabel>
 									<FancyMultiSelect
 										options={fancyMultiSelectOptions}
-										selected={options.filter((o) =>
-											Array.isArray(field.value)
-												? field.value.includes(o.id)
-												: false,
+										selected={fancyMultiSelectOptions.filter((o) =>
+											field.value.includes(o.id),
 										)}
 										onChange={(selectedOptions) => {
 											const selectedIds = selectedOptions.map(
 												(option) => option.id,
-											);
-											field.onChange(selectedIds);
+												);
+											// take the fancy multi select options up the waterfall
+											form.setValue('option', selectedIds); // Make sure this matches the schema
 										}}
 									/>
 									<FormMessage />

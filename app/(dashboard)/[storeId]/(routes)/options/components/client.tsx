@@ -34,7 +34,7 @@ export const OptionsClient: React.FC<OptionsClientProps> = ({ data }) => {
 			<DataTable searchKey='name' columns={columns} data={data} />
 			<Heading title='API' description='API Calls for Options' />
 			<Separator />
-			<ApiList entityName='options' entityIdName='optionId' />
+			<ApiList entityName='options' entityIdName='option' />
 		</>
 	);
 };

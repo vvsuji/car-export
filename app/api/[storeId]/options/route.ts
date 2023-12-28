@@ -39,7 +39,8 @@ export async function POST(
 
 		const option = await prismadb.option.create({
 			data: {
-				name,
+				id: params.storeId,
+				name, // assuming 'name' is a valid field and provided in body
 				storeId: params.storeId,
 			},
 		});

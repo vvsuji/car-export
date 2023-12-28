@@ -35,7 +35,7 @@ export async function GET(
 
 		return NextResponse.json(product);
 	} catch (error) {
-		console.log('[PRODUCT_GET]', error);
+		console.error('[PRODUCT_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -74,7 +74,7 @@ export async function DELETE(
 
 		return NextResponse.json(product);
 	} catch (error) {
-		console.log('[PRODUCT_DELETE]', error);
+		console.error('[PRODUCT_DELETE]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -89,7 +89,6 @@ export async function PATCH(
 		const body = await req.json();
 
 		const {
-			name,
 			price,
 			categoryId,
 			images,
@@ -101,7 +100,7 @@ export async function PATCH(
 			fuelTypeId,
 			locationId,
 			modelId,
-			optionId,
+			option,
 			passengerId,
 			steeringId,
 			transmissionId,
@@ -117,9 +116,9 @@ export async function PATCH(
 			return new NextResponse('Product id is required', { status: 400 });
 		}
 
-		if (!name) {
-			return new NextResponse('Name is required', { status: 400 });
-		}
+		// if (!name) {
+		// 	return new NextResponse('Name is required', { status: 400 });
+		// }
 
 		if (!images || !images.length) {
 			return new NextResponse('Images are required', { status: 400 });
@@ -165,7 +164,7 @@ export async function PATCH(
 			return new NextResponse('Model id is required', { status: 400 });
 		}
 
-		if (!optionId) {
+		if (!option) {
 			return new NextResponse('Option id is required', { status: 400 });
 		}
 
@@ -197,7 +196,6 @@ export async function PATCH(
 				id: params.productId,
 			},
 			data: {
-				name,
 				price,
 				categoryId,
 				colorId,
@@ -207,8 +205,8 @@ export async function PATCH(
 				driveTypeId,
 				fuelTypeId,
 				locationId,
-				modelId,
-				optionId,
+				model: modelId,
+				option,
 				passengerId,
 				steeringId,
 				transmissionId,
@@ -229,6 +227,11 @@ export async function PATCH(
 					createMany: {
 						data: [...images.map((image: { url: string }) => image)],
 					},
+				},
+
+				// @ts-ignore
+				option: {
+					connect: option.map((id: string) => ({ id })), // Connect new options
 				},
 			},
 		});
