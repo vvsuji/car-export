@@ -205,7 +205,10 @@ export async function PATCH(
 				fuelTypeId,
 				locationId,
 				model: modelId,
-				option,
+				option: {
+					connect: option.map((id: string) => ({ id })),
+					// expects in this form: [{ id: "8" }, { id: "9" }, { id: "10" }],
+				},
 				passengerId,
 				steeringId,
 				transmissionId,
@@ -227,8 +230,6 @@ export async function PATCH(
 						data: [...images.map((image: { url: string }) => image)],
 					},
 				},
-
-				// @ts-ignore
 				option: {
 					connect: option.map((id: string) => ({ id })), // Connect new options
 				},

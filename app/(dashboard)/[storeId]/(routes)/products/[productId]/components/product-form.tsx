@@ -223,7 +223,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 				...data,
 				// option: selectedOptions.map((o) => o.id), // Convert selected options to just IDs
 			};
-
+      console.log(updatedData);
 			const response = initialData
 				? await axios.patch(
 						`/api/${params.storeId}/products/${params.productId}`,
