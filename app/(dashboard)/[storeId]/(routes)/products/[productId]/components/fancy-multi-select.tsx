@@ -69,6 +69,8 @@ export function FancyMultiSelect({
 						setSelected((prev) => {
 							const newSelected = [...prev];
 							newSelected.pop(); // Remove the last selected item
+							// this fires twice. not sure if that makes any difference tho
+							onChange(newSelected); // unsure if async
 							return newSelected;
 						});
 					}
@@ -78,7 +80,7 @@ export function FancyMultiSelect({
 				}
 			}
 		},
-		[],
+		[onChange],
 	); // Empty dependency array
 
 	return (
@@ -112,20 +114,25 @@ export function FancyMultiSelect({
 				{open && selectables.length > 0 ? (
 					<div className='absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in'>
 						<CommandGroup className='h-full overflow-auto'>
-							{selectables.map((framework) => {
+							{selectables.map((selectableOption) => {
 								return (
 									<CommandItem
-										key={framework.id}
+										key={selectableOption.id}
 										onMouseDown={(e) => {
 											e.preventDefault();
 											e.stopPropagation();
 										}}
 										onSelect={(value) => {
 											setInputValue('');
-											setSelected((prev) => [...prev, framework]);
+											setSelected((prev) => {
+												const newSelected = [...prev, selectableOption]
+												// this fires twice. not sure if that makes any difference tho
+												onChange(newSelected);
+												return newSelected;
+											});
 										}}
 										className={'cursor-pointer'}>
-										{framework.name}
+										{selectableOption.name}
 									</CommandItem>
 								);
 							})}

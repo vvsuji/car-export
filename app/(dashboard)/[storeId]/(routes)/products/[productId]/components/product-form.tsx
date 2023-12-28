@@ -604,7 +604,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 										onChange={(selectedOptions) => {
 											const selectedIds = selectedOptions.map(
 												(option) => option.id,
-											);
+												);
+											// take the fancy multi select options up the waterfall
 											form.setValue('option', selectedIds); // Make sure this matches the schema
 										}}
 									/>
