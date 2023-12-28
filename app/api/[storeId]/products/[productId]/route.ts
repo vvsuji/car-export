@@ -35,7 +35,7 @@ export async function GET(
 
 		return NextResponse.json(product);
 	} catch (error) {
-		console.log('[PRODUCT_GET]', error);
+		console.error('[PRODUCT_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -74,7 +74,7 @@ export async function DELETE(
 
 		return NextResponse.json(product);
 	} catch (error) {
-		console.log('[PRODUCT_DELETE]', error);
+		console.error('[PRODUCT_DELETE]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -205,7 +205,7 @@ export async function PATCH(
 				driveTypeId,
 				fuelTypeId,
 				locationId,
-				modelId,
+				model: modelId,
 				option,
 				passengerId,
 				steeringId,
