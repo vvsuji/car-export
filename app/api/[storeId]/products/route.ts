@@ -12,6 +12,8 @@ export async function POST(
 
 		const body = await req.json();
 
+		// body.option = body.option || [];
+
 		const {
 			name,
 			price,
@@ -123,6 +125,7 @@ export async function POST(
 			return new NextResponse('Unauthorized', { status: 405 });
 		}
 
+		const selectedOptions = option.map((id) => ({ id }));
 
 		const product = await prismadb.product.create({
 			data: {
@@ -130,68 +133,83 @@ export async function POST(
 				isFeatured,
 				isArchived,
 				year,
-				optionId: "hey, don't delete me unless you remove optionId from Product",
 				images: {
 					createMany: {
 						data: images.map((image: { url: string }) => ({ url: image.url })),
 					},
 				},
 				option: {
-					connect: option.map((id: string) => ({ id })),
-					// expects in this form: [{ id: "8" }, { id: "9" }, { id: "10" }],
+					// @ts-ignore
+					connect: selectedOptions,
 				},
 				store: {
+					// @ts-ignore
 					connect: {
 						id: params.storeId,
 					},
 				},
 				category: {
+					// @ts-ignore
 					connect: {
 						id: categoryId,
 					},
 				},
 				make: {
+					// @ts-ignore
 					connect: {
 						id: makeId,
 					},
 				},
-				model: modelId,
+				model: {
+					// @ts-ignore
+					connect: {
+						id: modelId,
+					},
+				},
 				fuelType: {
+					// @ts-ignore
 					connect: {
 						id: fuelTypeId,
 					},
 				},
 				transmission: {
+					// @ts-ignore
 					connect: {
 						id: transmissionId,
 					},
 				},
 				driveType: {
+					// @ts-ignore
 					connect: {
 						id: driveTypeId,
 					},
 				},
 				condition: {
+					// @ts-ignore
 					connect: {
 						id: conditionId,
 					},
 				},
 				passenger: {
+					// @ts-ignore
 					connect: {
 						id: passengerId,
 					},
 				},
 				color: {
+					// @ts-ignore
 					connect: {
 						id: colorId,
 					},
 				},
 				steering: {
+					// @ts-ignore
 					connect: {
 						id: steeringId,
 					},
 				},
 				location: {
+					// @ts-ignore
 					connect: {
 						id: locationId,
 					},
@@ -201,7 +219,7 @@ export async function POST(
 
 		return NextResponse.json(product);
 	} catch (error) {
-		console.error('[PRODUCTS_POST]', error);
+		console.log('[PRODUCTS_POST]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
@@ -219,7 +237,7 @@ export async function GET(
 		const driveTypeId = searchParams.get('driveTypeId') || undefined;
 		const fuelTypeId = searchParams.get('fuelTypeId') || undefined;
 		const locationId = searchParams.get('locationId') || undefined;
-		const model = searchParams.get('modelId') || undefined;
+		const modelId = searchParams.get('modelId') || undefined;
 		const option = searchParams.get('option') || undefined;
 		const passengerId = searchParams.get('passengerId') || undefined;
 		const steeringId = searchParams.get('steeringId') || undefined;
@@ -240,7 +258,7 @@ export async function GET(
 				driveTypeId,
 				fuelTypeId,
 				locationId,
-				model,
+				modelId,
 				passengerId,
 				steeringId,
 				transmissionId,
@@ -261,7 +279,7 @@ export async function GET(
 
 		return NextResponse.json(products);
 	} catch (error) {
-		console.error('[PRODUCTS_GET]', error);
+		console.log('[PRODUCTS_GET]', error);
 		return new NextResponse('Internal error', { status: 500 });
 	}
 };
