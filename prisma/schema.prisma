@@ -148,7 +148,7 @@ model Model {
   storeId   String // Foreign Key to Store
   store     Store     @relation("StoreToModel", fields: [storeId], references: [id])
   name      String
-  products  Product[] // Relation to Product model
+  // products  Product[] // Relation to Product model
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
@@ -215,8 +215,9 @@ model Product {
   isArchived     Boolean      @default(false)
   makeId         String // Foreign Key to Make
   make           Make         @relation(fields: [makeId], references: [id])
-  modelId        String // Foreign Key to Model
-  model          Model        @relation(fields: [modelId], references: [id])
+  // modelId        String // Foreign Key to Model
+  // model          Model        @relation(fields: [modelId], references: [id])
+  model          String
   year           Int
   fuelTypeId     String // Foreign Key to FuelType
   fuelType       FuelType     @relation(fields: [fuelTypeId], references: [id])
@@ -229,7 +230,7 @@ model Product {
   passengerId    String // Foreign Key to Passenger
   passenger      Passenger    @relation(fields: [passengerId], references: [id])
   optionId       String // Foreign Key to Option
-  option         Option       @relation(fields: [optionId], references: [id])
+  option         Option[]   //@relation(fields: [optionId], references: [id])
   colorId        String // Foreign Key to Color
   color          Color        @relation(fields: [colorId], references: [id])
   steeringId     String // Foreign Key to Steering
@@ -244,7 +245,8 @@ model Product {
   @@index([storeId])
   @@index([categoryId])
   @@index([makeId])
-  @@index([modelId])
+  // @@index([modelId])
+  @@index([model])
   @@index([fuelTypeId])
   @@index([transmissionId])
   @@index([driveTypeId])

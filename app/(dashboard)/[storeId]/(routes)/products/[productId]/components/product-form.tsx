@@ -204,6 +204,21 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 		console.log(data);
 		try {
 			setLoading(true);
+			// currently, categoryId / makeId / modelId have deceptive naming
+			// so we'll convert each "Id" (read: name) into an actual id
+
+			// todo: make this readable lol (laugh out loud)
+			data.categoryId = (() => {
+				for (const cat of categories) {
+					if (cat.name === data.categoryId) return cat.id;
+				}
+			})() || data.categoryId;
+			data.makeId = (() => {
+				for (const make of makes) { // mighty
+					if (make.name === data.makeId) return make.id; // yeah this wont be confusing
+				}
+			})() || data.makeId;
+
 			const updatedData = {
 				...data,
 				// option: selectedOptions.map((o) => o.id), // Convert selected options to just IDs
@@ -235,6 +250,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 			router.push(`/${params.storeId}/products`);
 			toast.success('Product deleted.');
 		} catch (error: any) {
+			console.error('Error deleting data:', error);
 			toast.error('Something went wrong.');
 		} finally {
 			setLoading(false);
