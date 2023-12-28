@@ -33,11 +33,12 @@ const OrdersPage = async ({
 		phone: item.phone,
 		address: item.address,
 		products: item.orderItems
-			.map((orderItem) => orderItem.product.model)
+			.map((orderItem) => orderItem.product?.makeId || 'Unknown Product')
 			.join(', '),
 		totalPrice: formatter.format(
 			item.orderItems.reduce((total, item) => {
-				return total + Number(item.product.price);
+				const price = Number(item.product?.price || 0);
+				return total + price;
 			}, 0),
 		),
 		isPaid: item.isPaid,
