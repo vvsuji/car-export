@@ -29,16 +29,21 @@ const OrdersPage = async ({
   });
 
   const formattedOrders: OrderColumn[] = orders.map((item) => ({
-    id: item.id,
-    phone: item.phone,
-    address: item.address,
-    products: item.orderItems.map((orderItem) => orderItem.product.name).join(', '),
-    totalPrice: formatter.format(item.orderItems.reduce((total, item) => {
-      return total + Number(item.product.price)
-    }, 0)),
-    isPaid: item.isPaid,
-    createdAt: format(item.createdAt, 'MMMM do, yyyy'),
-  }));
+		id: item.id,
+		phone: item.phone,
+		address: item.address,
+		products: item.orderItems
+			.map((orderItem) => orderItem.product?.makeId || 'Unknown Product')
+			.join(', '),
+		totalPrice: formatter.format(
+			item.orderItems.reduce((total, item) => {
+				const price = Number(item.product?.price || 0);
+				return total + price;
+			}, 0),
+		),
+		isPaid: item.isPaid,
+		createdAt: format(item.createdAt, 'MMMM do, yyyy'),
+	}));
 
   return (
     <div className="flex-col">
