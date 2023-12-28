@@ -25,7 +25,6 @@ export async function GET(
 				driveType: true,
 				fuelType: true,
 				location: true,
-				model: true,
 				option: true,
 				passenger: true,
 				steering: true,
