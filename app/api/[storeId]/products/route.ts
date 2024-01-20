@@ -253,6 +253,13 @@ export async function GET(
 				color: true,
 				make: true,
 				option: true,
+				condition: true,
+				transmission: true,
+				driveType: true,
+				fuelType: true,
+				passenger: true,
+				steering: true,
+				location: true,
 			},
 			orderBy: {
 				createdAt: 'desc',
